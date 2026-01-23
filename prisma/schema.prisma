@@ -1,0 +1,246 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String // Hashed
+  name      String?
+  role      String   @default("user") // "user", "admin", "moderator"
+  image     String?
+  
+  // Account Recovery & Security
+  emailVerifiedAt     DateTime?
+  passwordResetToken  String?   @unique
+  passwordResetExpires DateTime?
+  lastLoginAt         DateTime?
+  failedLoginAttempts Int       @default(0)
+
+  // Payments (Stripe)
+  stripeCustomerId      String?   @unique
+  stripeSubscriptionId  String?   @unique
+  planType              String    @default("free") // "free", "premium", "family"
+  subscriptionStatus    String    @default("active") // "active", "canceled", "past_due"
+  trialEndsAt           DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  babies        Baby[]
+  trackerEntries TrackerEntry[]
+  prescriptions Prescription[]
+  posts         Post[]
+  comments      Comment[]
+  notifications Notification[]
+  consents      ConsentLog[]
+  
+  // Intelligent Onboarding & Personalization (Updated for ATI)
+  profile           Profile?
+  insightSignals    InsightSignal[]
+  personalPlan      PersonalPlan?
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  displayName      String?
+  timezone         String   @default("UTC")
+  journeyStage     String   @default("preparing") // "preparing", "actively_transitioning", "post_weaning"
+  
+  // Legacy Onboarding Data (Migrated)
+  isCurrentlyBreastfeeding Boolean @default(true)
+  feedingFrequency         Int?     // feeds per day
+  lastFeedTime             DateTime?
+  goalTimeline             String?  // "2_weeks", "1_month", "asap", "no_rush"
+  primaryGoal              String?  // "reduce_pain", "stop_pumping", "return_to_work"
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InsightSignal {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  date                DateTime @default(now())
+  signalType          String   // "pattern_shift", "pace_change", "emotional_load"
+  message             String
+  severity            String   // "low", "medium"
+  
+  // ATI Metrics
+  stabilityScore      Int?     // 0-100 Transition Stability Score
+  congestionIndicator String?  // "low", "moderate", "high"
+  emotionalLoadIndex  Int?     // 1-10 derived from mood
+  
+  // Raw inputs stored for audit
+  rawMood             Int?
+  rawPainLevel        Int?
+  
+  createdAt DateTime @default(now())
+}
+
+model PersonalPlan {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  status    String   // "generating", "active", "completed"
+  planType  String   // "rapid", "gentle", "medical"
+  
+  generatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Baby {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  birthDate DateTime
+  gender    String?
+  
+  milestones Milestone[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model TrackerEntry {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         DateTime @default(now())
+  
+  // Lactation Activity
+  feedsCount       Int      @default(0)
+  lastFeedTime     DateTime?
+  pumpSessions     Int      @default(0)
+  
+  // Physical Symptoms (0-5)
+  discomfortLevel  Int? // 0-5
+  fullnessLevel    Int? // 0-5
+  sensitivityLevel Int? // 0-5
+  temperatureLevel Int? // 0-5
+  
+  // Emotional State (0-5)
+  stressLevel      Int? // 0-5
+  moodLevel        Int? // 0-5
+  anxietyLevel     Int? // 0-5
+  
+  // Baby Signals
+  babyFussiness    Int? // 0-5
+  solidFoodIntake  Int? // Percentage 0-100
+  babyDependency   String? // "low", "medium", "high"
+  
+  notes            String?
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Prescription {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  dosage      String
+  frequency   String
+  startDate   DateTime
+  endDate     DateTime?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Milestone {
+  id        String   @id @default(cuid())
+  babyId    String
+  baby      Baby     @relation(fields: [babyId], references: [id], onDelete: Cascade)
+  title     String
+  date      DateTime
+  description String?
+  
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  likes     Int      @default(0)
+  
+  comments  Comment[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+  
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   // "info", "warning", "success"
+  isRead    Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+}
+
+model ConsentLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documentType String   // "TOS", "PRIVACY_POLICY"
+  version     String
+  acceptedAt  DateTime @default(now())
+  ipAddress   String?
+}
+
+// --- SYSTEM CONTROL LAYER ---
+
+model SystemFlag {
+  key         String   @id @unique // e.g., "AI_ENABLED", "COMMUNITY_ENABLED"
+  value       Boolean  @default(false)
+  description String?
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?  // Admin User ID
+}
+
+model SystemLog {
+  id        String   @id @default(cuid())
+  level     String   // "info", "warn", "error", "critical"
+  message   String
+  metadata  String?  // JSON string
+  createdAt DateTime @default(now())
+}
+
+model AuditEvent {
+  id        String   @id @default(cuid())
+  actorId   String   // User ID who performed action
+  action    String   // "TOGGLE_FLAG", "BAN_USER", "EMERGENCY_STOP"
+  target    String?  // Target resource ID or Flag Name
+  details   String?
+  createdAt DateTime @default(now())
+}

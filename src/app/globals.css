@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors - FemTech Premium */
+  --color-brand-rose: #C88A8A;
+  /* Dusty Rose */
+  --color-brand-rose-light: #F2E6E6;
+
+  /* Premium Palette */
+  --color-brand-sage: #8FAF9A;
+  /* Sage */
+  --color-brand-sage-light: #F0F6F3;
+
+  --color-brand-gold: #CFA75D;
+  /* Metallic Gold */
+  --color-brand-gold-light: #F9F5E6;
+
+  --color-brand-eucalyptus: #5F7E7E;
+  --color-brand-eucalyptus-light: #E6EEEE;
+
+  /* Vicessa 2.0 Base - Eucalyptus Mist */
+  --background: #E6EEEE;
+  /* High Contrast Text - Deep Charcoal */
+  --foreground: #0f172a;
+}
+
+/* Force the background color on the root elements */
+html,
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), 'Inter', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 
+   Restored "Vicessa 2.0" Gradient Overlay 
+   Use Eucalyptus, Rose, and Gold for the requested premium feel.
+*/
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(197, 160, 40, 0.05) 0%, transparent 40%),
+    /* Gold Hint */
+    radial-gradient(circle at 90% 80%, rgba(192, 132, 151, 0.05) 0%, transparent 40%);
+  /* Rose Hint */
+  background-attachment: fixed;
+}
+
+/* 
+   Bright White Glass Panel 
+   High opacity white to ensure pink text pops inside.
+*/
+.glass-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Navigation Text Shadow Utility */
+.nav-link-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode override removed to enforce Brand Theme */
+
+body {
+  /* Ensure Tailwind doesn't override with base styles if any */
+  @apply bg-[var(--background)] text-[var(--foreground)];
+}
+
+.dark .glass-panel {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

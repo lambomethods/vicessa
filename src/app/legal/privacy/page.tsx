@@ -1,0 +1,60 @@
+export default function PrivacyPage() {
+    return (
+        <div className="container mx-auto max-w-3xl p-8 space-y-8 text-gray-800">
+            <h1 className="text-3xl font-bold font-serif text-[var(--foreground)]">Vicessa Privacy Policy</h1>
+            <p className="text-gray-500">Effective Date: January 22, 2026</p>
+
+            {/* MASTER POSITIONING STATEMENT */}
+            <div className="bg-[var(--color-brand-mist)] border text-sm p-4 rounded-lg italic">
+                Vicessa is a digital wellness and tracking platform designed to help users monitor personal lactation and weaning-related data. Vicessa does not provide medical diagnosis, treatment, or clinical advice.
+            </div>
+
+            <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">1. Data We Collect</h2>
+                <ul className="list-disc pl-5 space-y-2">
+                    <li><strong>Personal Information:</strong> Name, email address (for account management).</li>
+                    <li><strong>Health-Related Inputs:</strong> Symptoms, mood, lactation logs, and weaning goals.</li>
+                    <li><strong>Child-Related Data:</strong> Age, feeding milestones (stored in non-identifiable formats where possible).</li>
+                    <li><strong>Usage Data:</strong> Analytics, device information, and interaction logs.</li>
+                    <li><strong>Payment Data:</strong> Processed securely via Stripe (we do not store full credit card numbers).</li>
+                </ul>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">2. Sensitive Data & HIPAA</h2>
+                <p>Vicessa does not store medical records or provide clinical data services. While we treat your health data with encryption and security matching HIPAA technical standards, your use of the app for personal tracking places it outside standard HIPAA &quot;Covered Entity&quot; regulations.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">3. COPPA (Children’s Data Shield)</h2>
+                <p><strong>Vicessa does not knowingly collect personal information from children under 13.</strong> Any child-related data entered (e.g., baby age) is provided by adult users for their own tracking purposes only.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">4. Your Data Rights</h2>
+                <ul className="list-disc pl-5 space-y-2">
+                    <li>Request deletion of your account and data.</li>
+                    <li>Export your personal dataset.</li>
+                    <li>Withdraw consent for optional data processing.</li>
+                    <li>Opt out of marketing communications.</li>
+                </ul>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">5. Security Measures</h2>
+                <p>Vicessa uses industry-standard encryption, authentication, and access controls to protect your data. However, no digital transmission is 100% secure.</p>
+            </section>
+
+            <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">6. Third-Party Services</h2>
+                <p>We utilize the following trusted partners:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                    <li><strong>Stripe:</strong> Payment processing.</li>
+                    <li><strong>Resend / Firebase:</strong> Notifications and transactional emails.</li>
+                    <li><strong>Vercel / AWS:</strong> Hosting and infrastructure.</li>
+                </ul>
+                <p className="text-sm mt-2 italic">Vicessa is not responsible for the privacy practices of these third-party services.</p>
+            </section>
+        </div>
+    )
+}
