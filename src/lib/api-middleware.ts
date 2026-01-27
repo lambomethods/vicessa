@@ -14,7 +14,7 @@ export function withValidation<T>(
         } catch (error) {
             if (error instanceof z.ZodError) {
                 return NextResponse.json(
-                    { error: "Validation Failed", details: error.errors },
+                    { error: "Validation Failed", details: error.issues },
                     { status: 400 }
                 )
             }

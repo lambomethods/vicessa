@@ -255,7 +255,7 @@ model SecurityLog {
   email     String?  // Email for failed login attempts
   ip        String?  // IP address of the request
   userAgent String?  // Browser/client info
-  details   Json?    // Additional context
+  details   String?  // Additional context (JSON string)
   resolved  Boolean  @default(false)
   notes     String?  // Admin notes
   createdAt DateTime @default(now())

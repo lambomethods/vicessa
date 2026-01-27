@@ -53,7 +53,7 @@ export async function logSecurityEvent(options: SecurityEventOptions) {
                 email,
                 ip: finalIp,
                 userAgent: finalUserAgent,
-                details,
+                details: details ? JSON.stringify(details) : null,
             },
         })
 

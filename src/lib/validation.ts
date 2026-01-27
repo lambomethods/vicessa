@@ -92,7 +92,7 @@ export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): T | null
         return schema.parse(data)
     } catch (error) {
         if (error instanceof z.ZodError) {
-            console.error("Validation error:", error.errors)
+            console.error("Validation error:", error.issues)
         }
         return null
     }
@@ -101,7 +101,7 @@ export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): T | null
 // Utility to get first validation error message
 export function getValidationError(error: unknown): string {
     if (error instanceof z.ZodError) {
-        return error.errors[0]?.message || "Validation failed"
+        return error.issues[0]?.message || "Validation failed"
     }
     return "Validation failed"
 }
