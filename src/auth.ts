@@ -3,7 +3,6 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
-import { logFailedAuth } from "@/lib/security-log"
 import { prisma } from "@/lib/db"
 
 async function getUser(email: string) {
@@ -14,7 +13,7 @@ async function getUser(email: string) {
         return user
     } catch (error) {
         console.error('Failed to fetch user:', error)
-        throw new Error('Failed to fetch user.')
+        return null
     }
 }
 
@@ -24,9 +23,8 @@ const authConfig = {
     },
     callbacks: {
         authorized({ auth, request }: any) {
-            // Check if auth is disabled (emergency killswitch)
+            // Check if auth is disabled
             if (process.env.DISABLE_AUTH === "true") {
-                console.warn("Authentication attempt while AUTH disabled")
                 return false
             }
             const isOnDashboard = request.nextUrl?.pathname?.startsWith("/dashboard")
@@ -64,45 +62,51 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                // Check if auth is disabled (emergency killswitch)
                 if (process.env.DISABLE_AUTH === "true") {
-                    console.warn("Authentication attempt while AUTH disabled")
+                    console.warn("Auth disabled")
                     return null
                 }
 
-                const parsedCredentials = z
+                const parsed = z
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials)
 
-                if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data
+                if (!parsed.success) {
+                    console.log('Invalid format')
+                    return null
+                }
+
+                const { email, password } = parsed.data
+                
+                try {
                     const user = await getUser(email)
                     if (!user) {
-                        // Log failed login attempt
-                        await logFailedAuth(email)
+                        console.log('User not found:', email)
                         return null
                     }
 
                     const passwordsMatch = await bcrypt.compare(password, user.password)
-                    if (passwordsMatch) {
-                        // Update last login time
-                        try {
-                            await prisma.user.update({
-                                where: { id: user.id },
-                                data: { lastLoginAt: new Date() },
-                            })
-                        } catch (error) {
-                            console.error("Failed to update last login:", error)
-                        }
-                        return user
-                    } else {
-                        // Log failed login attempt
-                        await logFailedAuth(email)
+                    if (!passwordsMatch) {
+                        console.log('Password mismatch for:', email)
+                        return null
                     }
-                }
 
-                console.log('Invalid credentials')
-                return null
+                    // Update last login
+                    try {
+                        await prisma.user.update({
+                            where: { id: user.id },
+                            data: { lastLoginAt: new Date() },
+                        })
+                    } catch (e) {
+                        console.error("Failed to update last login:", e)
+                    }
+
+                    console.log('✅ Auth successful for:', email)
+                    return user
+                } catch (error) {
+                    console.error('Auth error:', error)
+                    return null
+                }
             },
         }),
     ],
