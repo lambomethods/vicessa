@@ -1,11 +1,10 @@
-import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "@/lib/db"
-import { authConfig } from "./auth.config"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
 import { logFailedAuth } from "@/lib/security-log"
+import { prisma } from "@/lib/prisma"
 
 async function getUser(email: string) {
     try {
@@ -19,19 +18,38 @@ async function getUser(email: string) {
     }
 }
 
-/**
- * Check if authentication is currently disabled (killswitch)
- */
-async function isAuthDisabled(): Promise<boolean> {
-    try {
-        const flag = await prisma.systemFlag.findUnique({
-            where: { key: "DISABLE_AUTH" },
-        })
-        return flag?.value || false
-    } catch (error) {
-        console.error("Failed to check auth disabled flag:", error)
-        return false
-    }
+const authConfig = {
+    pages: {
+        signIn: "/login",
+    },
+    callbacks: {
+        authorized({ auth, request }: any) {
+            // Check if auth is disabled (emergency killswitch)
+            if (process.env.DISABLE_AUTH === "true") {
+                console.warn("Authentication attempt while AUTH disabled")
+                return false
+            }
+            const isOnDashboard = request.nextUrl?.pathname?.startsWith("/dashboard")
+            if (isOnDashboard) {
+                return !!auth?.user
+            }
+            return true
+        },
+        jwt({ token, user }: any) {
+            if (user) {
+                token.id = user.id
+                token.role = user.role
+            }
+            return token
+        },
+        session({ session, token }: any) {
+            if (session?.user) {
+                session.user.id = token.id
+                session.user.role = token.role
+            }
+            return session
+        },
+    },
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -47,8 +65,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
             async authorize(credentials) {
                 // Check if auth is disabled (emergency killswitch)
-                const authDisabled = await isAuthDisabled()
-                if (authDisabled) {
+                if (process.env.DISABLE_AUTH === "true") {
                     console.warn("Authentication attempt while AUTH disabled")
                     return null
                 }
@@ -89,30 +106,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
         }),
     ],
-    callbacks: {
-        ...authConfig.callbacks,
-        async session({ session, token }) {
-            // Check if auth is disabled during session
-            const authDisabled = await isAuthDisabled()
-            if (authDisabled) {
-                console.warn("Session requested while AUTH disabled")
-                return null as any
-            }
-
-            if (token.sub && session.user) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (session.user as any).id = token.sub as string
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (session.user as any).role = token.role || 'user'
-            }
-            return session
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                token.role = (user as any).role || 'user'
-            }
-            return token
-        }
-    }
 })
