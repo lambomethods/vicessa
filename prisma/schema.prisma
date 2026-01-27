@@ -244,3 +244,24 @@ model AuditEvent {
   details   String?
   createdAt DateTime @default(now())
 }
+
+// --- SECURITY MONITORING ---
+
+model SecurityLog {
+  id        String   @id @default(cuid())
+  event     String   // "FAILED_LOGIN", "UNAUTHORIZED_ACCESS", "API_ABUSE", etc.
+  severity  String   @default("info") // "info", "warning", "critical"
+  userId    String?  // User ID if applicable
+  email     String?  // Email for failed login attempts
+  ip        String?  // IP address of the request
+  userAgent String?  // Browser/client info
+  details   Json?    // Additional context
+  resolved  Boolean  @default(false)
+  notes     String?  // Admin notes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([event])
+  @@index([createdAt])
+  @@index([ip])
+}
