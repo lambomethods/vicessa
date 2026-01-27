@@ -1,5 +1,5 @@
 datasource db {
-  provider = env("DATABASE_PROVIDER")
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -18,7 +18,7 @@ model User {
   // Account Recovery & Security
   emailVerifiedAt     DateTime?
   passwordResetToken  String?   @unique
-  passwordResetExpiry DateTime?
+  passwordResetExpires DateTime?
   
   // Activity Tracking
   createdAt    DateTime @default(now())
