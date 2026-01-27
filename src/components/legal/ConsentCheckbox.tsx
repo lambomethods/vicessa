@@ -47,7 +47,7 @@ export function ConsentCheckbox({ onConsentChange }: ConsentCheckboxProps) {
                     className="mt-1 h-4 w-4 rounded border-gray-300 text-[var(--color-brand-rose)] focus:ring-[var(--color-brand-rose)]"
                 />
                 <label htmlFor="consent-terms" className="text-sm text-gray-700 leading-tight">
-                    I agree to the <Link href="/legal/terms" target="_blank" className="font-bold underline text-[var(--color-brand-rose)]">Terms of Service</Link>.
+                    I agree to the <Link href="/legal/terms" target="_blank" className="font-bold underline text-[var(--color-brand-rose)] hover:text-[var(--color-brand-rose)]/80">Terms of Service</Link>.
                 </label>
             </div>
 
