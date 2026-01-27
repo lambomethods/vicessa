@@ -1,9 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Sparkles, AlertCircle, Heart } from "lucide-react"
 import { SliderInput } from "./SliderInput"
 import { CounterInput } from "./CounterInput"
-import { useRouter } from "next/navigation"
+import { getLiveTip, Tip } from "@/lib/tips-engine"
 
 interface ExistingEntry {
     feedsCount: number
@@ -31,7 +33,21 @@ export function DailyLogForm({ existingEntry }: Props) {
         notes: existingEntry?.notes ?? ""
     })
 
-    const handleSubmit = async () => {
+    const [notes, setNotes] = useState("")
+
+    // Live AI Tip State
+    const [activeTip, setActiveTip] = useState<Tip | null>(null)
+
+    // Destructure for useEffect dependencies
+    const { discomfortLevel, moodLevel, feedsCount } = formData;
+
+    // Update tip when inputs change
+    useEffect(() => {
+        const tip = getLiveTip(discomfortLevel, moodLevel, feedsCount)
+        setActiveTip(tip)
+    }, [discomfortLevel, moodLevel, feedsCount])
+
+    const handleSubmit = async (e: React.FormEvent) => {
         setLoading(true)
         setSaved(false)
         try {
@@ -43,8 +59,11 @@ export function DailyLogForm({ existingEntry }: Props) {
 
             if (res.ok) {
                 setSaved(true)
-                // Redirect to logbook to see saved entries
-                router.push("/dashboard/history")
+                // Redirect to logbook                router.refresh()
+                router.push("/dashboard/history") // Redirect to Logbook as requested
+            } else {
+                // Handle non-OK response if needed, e.g., display an error message
+                console.error("Failed to save entry:", res.status, res.statusText);
             }
         } catch (error) {
             console.error(error)
@@ -123,7 +142,24 @@ export function DailyLogForm({ existingEntry }: Props) {
             </section>
 
             {/* Notes - Fixed visible border */}
-            <section className="space-y-2">
+            {/* --- LIVE AI TIP --- */}
+            {activeTip && (
+                <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl flex gap-3 animate-in fade-in slide-in-from-bottom-2">
+                    <div className="text-indigo-600 mt-1">
+                        <Sparkles className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-sm text-indigo-900 uppercase tracking-wider mb-1">
+                            Vicessa Insight
+                        </h4>
+                        <p className="text-indigo-800 text-sm leading-snug">
+                            {activeTip.message}
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            <div className="space-y-2">
                 <label className="text-sm font-medium">Notes</label>
                 <textarea
                     className="w-full p-4 rounded-xl border-2 border-gray-300 focus:border-[var(--color-brand-rose)] outline-none min-h-[100px] bg-white"
