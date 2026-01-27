@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Sparkles, AlertCircle, Heart } from "lucide-react"
+import { Sparkles } from "lucide-react"
 import { SliderInput } from "./SliderInput"
 import { CounterInput } from "./CounterInput"
 import { getLiveTip, Tip } from "@/lib/tips-engine"
@@ -33,8 +33,6 @@ export function DailyLogForm({ existingEntry }: Props) {
         notes: existingEntry?.notes ?? ""
     })
 
-    const [notes, setNotes] = useState("")
-
     // Live AI Tip State
     const [activeTip, setActiveTip] = useState<Tip | null>(null)
 
@@ -47,7 +45,7 @@ export function DailyLogForm({ existingEntry }: Props) {
         setActiveTip(tip)
     }, [discomfortLevel, moodLevel, feedsCount])
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async () => {
         setLoading(true)
         setSaved(false)
         try {
@@ -59,10 +57,9 @@ export function DailyLogForm({ existingEntry }: Props) {
 
             if (res.ok) {
                 setSaved(true)
-                // Redirect to logbook                router.refresh()
-                router.push("/dashboard/history") // Redirect to Logbook as requested
+                router.refresh()
+                router.push("/dashboard/history")
             } else {
-                // Handle non-OK response if needed, e.g., display an error message
                 console.error("Failed to save entry:", res.status, res.statusText);
             }
         } catch (error) {
@@ -141,8 +138,7 @@ export function DailyLogForm({ existingEntry }: Props) {
                 />
             </section>
 
-            {/* Notes - Fixed visible border */}
-            {/* --- LIVE AI TIP --- */}
+            {/* Live AI Tip */}
             {activeTip && (
                 <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl flex gap-3 animate-in fade-in slide-in-from-bottom-2">
                     <div className="text-indigo-600 mt-1">
@@ -159,7 +155,8 @@ export function DailyLogForm({ existingEntry }: Props) {
                 </div>
             )}
 
-            <div className="space-y-2">
+            {/* Notes */}
+            <section className="space-y-2">
                 <label className="text-sm font-medium">Notes</label>
                 <textarea
                     className="w-full p-4 rounded-xl border-2 border-gray-300 focus:border-[var(--color-brand-rose)] outline-none min-h-[100px] bg-white"
