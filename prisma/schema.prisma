@@ -10,34 +10,145 @@ generator client {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  password  String // Hashed
+  password  String
   name      String?
-  role      String   @default("user") // "user", "admin", "moderator"
+  role      String   @default("user")
   image     String?
   
-  // Account Recovery & Security
   emailVerifiedAt     DateTime?
   passwordResetToken  String?   @unique
   passwordResetExpires DateTime?
   
-  // Activity Tracking
+  // Stripe
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  planType              String  @default("free")
+  subscriptionStatus    String?
+  
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   lastLoginAt  DateTime?
   
-  // Relations
-  securityLogs SecurityLog[]
+  securityLogs   SecurityLog[]
+  trackerEntries TrackerEntry[]
+  posts          Post[]
+  comments       Comment[]
+  insightSignals InsightSignal[]
+  profile        Profile?
+  personalPlan   PersonalPlan?
+}
+
+model Profile {
+  id                       String    @id @default(cuid())
+  userId                   String    @unique
+  isCurrentlyBreastfeeding Boolean   @default(false)
+  feedingFrequency         Int?
+  lastFeedTime             DateTime?
+  goalTimeline             String?
+  primaryGoal              String?
+  journeyStage             String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TrackerEntry {
+  id               String    @id @default(cuid())
+  userId           String
+  date             DateTime  @default(now())
+  
+  feedsCount       Int       @default(0)
+  pumpSessions     Int       @default(0)
+  lastFeedTime     DateTime?
+  
+  discomfortLevel  Int?
+  fullnessLevel    Int?
+  sensitivityLevel Int?
+  temperatureLevel Int?
+  
+  stressLevel      Int?
+  moodLevel        Int?
+  anxietyLevel     Int?
+  
+  babyFussiness    Int?
+  solidFoodIntake  Int?
+  babyDependency   String?
+  
+  notes            String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, date])
+}
+
+model InsightSignal {
+  id                  String   @id @default(cuid())
+  userId              String
+  signalType          String
+  severity            String   @default("info")
+  message             String?
+  stabilityScore      Int?
+  congestionIndicator String?
+  emotionalLoadIndex  Int?
+  rawMood             Int?
+  rawPain             Int?
+  rawPainLevel        Int?
+  rawSymptoms         String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, signalType])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  content   String
+  published Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  content   String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([postId])
+  @@index([userId])
 }
 
 model SecurityLog {
   id        String   @id @default(cuid())
-  event     String   // "login_attempt", "failed_auth", "rate_limit_violation", "unauthorized_access", etc.
-  severity  String   @default("info") // "info", "warning", "critical"
+  event     String
+  severity  String   @default("info")
   userId    String?
   email     String?
   ip        String?
   userAgent String?
-  details   String? // JSON string for SQLite compatibility
+  details   String?
   resolved  Boolean  @default(false)
   
   createdAt DateTime @default(now())
@@ -51,4 +162,16 @@ model SystemFlag {
   key       String   @unique
   value     String
   updatedAt DateTime @updatedAt
+}
+
+model PersonalPlan {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  status    String   @default("pending")
+  planType  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
