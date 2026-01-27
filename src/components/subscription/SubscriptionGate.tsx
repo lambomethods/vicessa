@@ -16,7 +16,6 @@ export async function SubscriptionGate({
 }: SubscriptionGateProps) {
     const session = await auth()
 
-    // Default to free if no session (shouldn't happen on protected routes, but safe)
     let isPremium = false
 
     if (session?.user?.id) {
@@ -39,17 +38,17 @@ export async function SubscriptionGate({
             </div>
 
             {/* Lock Overlay */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10 bg-white/30 backdrop-blur-sm">
-                <div className="bg-white/90 p-6 rounded-2xl shadow-xl border border-[var(--color-brand-gold)] max-w-sm">
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10 bg-[var(--color-brand-mist)]/80 backdrop-blur-sm">
+                <div className="bg-white p-6 rounded-2xl shadow-xl border-2 border-[var(--color-brand-gold)] max-w-sm">
                     <div className="text-4xl mb-4">🔒</div>
                     <h3 className="text-xl font-bold text-[var(--foreground)] mb-2 font-serif">
                         {fallbackTitle}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-6">
+                    <p className="text-sm text-gray-700 mb-6">
                         {fallbackDescription}
                     </p>
                     <Link href="/pricing" className="block w-full">
-                        <Button className="w-full bg-[var(--color-brand-gold)] hover:bg-[var(--color-brand-gold)]/90 text-[var(--foreground)] font-bold">
+                        <Button className="w-full bg-[var(--color-brand-rose)] hover:bg-[var(--color-brand-rose)]/90 text-white font-bold shadow-lg">
                             Upgrade Now
                         </Button>
                     </Link>

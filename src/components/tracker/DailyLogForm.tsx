@@ -43,9 +43,8 @@ export function DailyLogForm({ existingEntry }: Props) {
 
             if (res.ok) {
                 setSaved(true)
-                router.refresh()
-                // Scroll to top to see success
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                // Redirect to logbook to see saved entries
+                router.push("/dashboard/history")
             }
         } catch (error) {
             console.error(error)
@@ -123,11 +122,11 @@ export function DailyLogForm({ existingEntry }: Props) {
                 />
             </section>
 
-            {/* Notes */}
+            {/* Notes - Fixed visible border */}
             <section className="space-y-2">
                 <label className="text-sm font-medium">Notes</label>
                 <textarea
-                    className="w-full p-4 rounded-xl border border-gray-200 focus:border-[var(--color-brand-rose)] outline-none min-h-[100px]"
+                    className="w-full p-4 rounded-xl border-2 border-gray-300 focus:border-[var(--color-brand-rose)] outline-none min-h-[100px] bg-white"
                     placeholder="Any specific triggers or feelings today?"
                     value={formData.notes}
                     onChange={e => setFormData({ ...formData, notes: e.target.value })}
@@ -137,7 +136,7 @@ export function DailyLogForm({ existingEntry }: Props) {
             <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full py-4 bg-[var(--foreground)] text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                className="w-full py-4 bg-[var(--color-brand-rose)] text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
             >
                 {loading ? "Saving..." : existingEntry ? "Update Log" : "Save Daily Log"}
             </button>

@@ -36,8 +36,13 @@ export default async function DashboardPage({
             {/* ACTION BUTTONS */}
             <div className="flex gap-3">
                 <Link href="/dashboard/tracking">
-                    <Button className="bg-[var(--color-brand-rose)] hover:bg-[var(--color-brand-rose)]/90 text-[var(--foreground)] font-bold shadow-lg shadow-rose-200/50 transition-all hover:scale-105 active:scale-95">
+                    <Button className="bg-[var(--color-brand-rose)] hover:bg-[var(--color-brand-rose)]/90 text-white font-bold shadow-lg shadow-rose-200/50 transition-all hover:scale-105 active:scale-95">
                         + Log Entry
+                    </Button>
+                </Link>
+                <Link href="/dashboard/history">
+                    <Button variant="outline" className="border-[var(--color-brand-sage)] text-[var(--color-brand-eucalyptus)] hover:bg-[var(--color-brand-mist)] gap-2">
+                        📖 Log Book
                     </Button>
                 </Link>
                 <Link href="/dashboard/report">
@@ -61,19 +66,19 @@ export default async function DashboardPage({
                 </Card>
 
 
-                {/* Insight Card */}
-                <Card>
+                {/* Insight Card - Fixed contrast */}
+                <Card className="bg-white border border-gray-200">
                     <CardHeader>
-                        <CardTitle>Tip of the Day</CardTitle>
+                        <CardTitle className="text-[var(--foreground)]">Tip of the Day</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-sm text-gray-600 italic">&quot;Stay hydrated and wear supportive (but not tight) clothing to help with comfort.&quot;</p>
+                        <p className="text-sm text-gray-700 italic">&quot;Stay hydrated and wear supportive (but not tight) clothing to help with comfort.&quot;</p>
                     </CardContent>
                 </Card>
             </div>
 
             {/* Main Transition Trends Chart - Premium Feature */}
-            <div className="glass-panel p-6 rounded-2xl">
+            <div className="glass-panel p-6 rounded-2xl border border-gray-200 bg-white">
                 <h3 className="text-lg font-semibold mb-6 text-[var(--foreground)] flex items-center gap-2">
                     <span>📈</span> Transition Trends
                 </h3>
