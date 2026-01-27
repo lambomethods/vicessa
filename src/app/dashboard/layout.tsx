@@ -19,7 +19,9 @@ export default async function DashboardLayout({
             {/* Sidebar - Desktop */}
             <aside className="hidden w-64 border-r border-gray-200 dark:border-gray-800 lg:block flex-col">
                 <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-800">
-                    <Logo className="w-8 h-8" />
+                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                        <Logo className="w-8 h-8" />
+                    </Link>
                 </div>
                 <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-3">
                     <Link href="/dashboard" className="flex items-center gap-3 rounded-lg px-4 py-3 text-[var(--foreground)] font-medium transition-all bg-white/60 hover:bg-white hover:shadow-sm border border-transparent hover:border-gray-100">
@@ -53,9 +55,11 @@ export default async function DashboardLayout({
 
             {/* Main Content */}
             <main className="flex-1 overflow-y-auto">
-                {/* Mobile Header Placeholder */}
+                {/* Mobile Header */}
                 <div className="lg:hidden h-14 border-b flex items-center px-4 bg-white/80 backdrop-blur sticky top-0 z-30">
-                    <Logo className="w-6 h-6" />
+                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                        <Logo className="w-6 h-6" />
+                    </Link>
                 </div>
                 <div className="container mx-auto p-4 md:p-8 max-w-5xl animate-fade-in">
                     {children}
