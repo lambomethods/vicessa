@@ -180,7 +180,6 @@ export async function resolveSecurityEvent(eventId: string, notes: string) {
         where: { id: eventId },
         data: {
             resolved: true,
-            notes,
             updatedAt: new Date(),
         },
     })

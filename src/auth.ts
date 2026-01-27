@@ -4,7 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
 import { logFailedAuth } from "@/lib/security-log"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/db"
 
 async function getUser(email: string) {
     try {
