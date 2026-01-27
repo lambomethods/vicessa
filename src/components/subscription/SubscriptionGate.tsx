@@ -47,7 +47,7 @@ export async function SubscriptionGate({
                     <p className="text-sm text-gray-700 mb-6">
                         {fallbackDescription}
                     </p>
-                    <Link href="/pricing" className="block w-full">
+                    <Link href="/marketplace" className="block w-full">
                         <Button className="w-full bg-[var(--color-brand-rose)] hover:bg-[var(--color-brand-rose)]/90 text-white font-bold shadow-lg">
                             Upgrade Now
                         </Button>

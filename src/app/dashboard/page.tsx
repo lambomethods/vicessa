@@ -66,15 +66,11 @@ export default async function DashboardPage({
                 </Card>
 
 
-                {/* Insight Card - Fixed contrast */}
-                <Card className="bg-white border border-gray-200">
-                    <CardHeader>
-                        <CardTitle className="text-[var(--foreground)]">Tip of the Day</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-gray-700 italic">&quot;Stay hydrated and wear supportive (but not tight) clothing to help with comfort.&quot;</p>
-                    </CardContent>
-                </Card>
+                {/* Tip of the Day - High contrast fix */}
+                <div className="rounded-xl border-2 border-gray-300 bg-white shadow-sm p-6">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-3">💡 Tip of the Day</h3>
+                    <p className="text-base text-gray-800 italic">&quot;Stay hydrated and wear supportive (but not tight) clothing to help with comfort.&quot;</p>
+                </div>
             </div>
 
             {/* Main Transition Trends Chart - Premium Feature */}
