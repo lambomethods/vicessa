@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
 import { ConsentCheckbox } from "@/components/legal/ConsentCheckbox"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
     const router = useRouter()
@@ -37,7 +38,20 @@ export default function RegisterPage() {
                 throw new Error(data.error || "Registration failed")
             }
 
-            router.push("/login?registered=true")
+            // VICESSA REFACTOR: Auto-login after registration
+            const signInRes = await signIn("credentials", {
+                redirect: false,
+                email: formData.email,
+                password: formData.password,
+            })
+
+            if (signInRes?.error) {
+                // Determine error type? Just push to login if auto-login fails
+                router.push("/login?error=AutoLoginFailed")
+            } else {
+                // Force full reload/redirect to ensure session is picked up
+                window.location.href = "/dashboard"
+            }
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : "Registration failed")
         } finally {

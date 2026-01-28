@@ -5,6 +5,8 @@ import { redirect } from "next/navigation"
 import { OverviewCharts } from "@/components/dashboard/OverviewCharts"
 import { SubscriptionGate } from "@/components/subscription/SubscriptionGate"
 import Link from "next/link"
+import { prisma } from "@/lib/db"
+import { DynamicInsightCard } from "@/components/dashboard/DynamicInsightCard"
 
 export default async function DashboardPage({
     searchParams,
@@ -16,11 +18,39 @@ export default async function DashboardPage({
 
     const showOnboardingSuccess = searchParams?.onboarding === "complete"
 
+    // 1. Fetch Latest Insight (Phase 3 Engine)
+    const latestInsightRaw = await prisma.insightSignal.findFirst({
+        where: {
+            userId: session.user.id,
+            // STAGE 1: Hide Silent Correlations (Backend Only)
+            signalType: {
+                not: 'SILENT_CORRELATION'
+            }
+        },
+        orderBy: { createdAt: "desc" },
+    })
+
+    // 2. Fetch User Stats (Streak/Counts)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const todaysEntries = await prisma.trackerEntry.count({
+        where: {
+            userId: session.user.id,
+            createdAt: { gte: today }
+        }
+    })
+
+    // TODO: move logic to separate data-access layer later
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-bold text-[var(--foreground)]">Welcome back, Mama.</h1>
-                <p className="text-muted-foreground">Here is your daily weaning summary.</p>
+                <h1 className="text-3xl font-bold text-[var(--foreground)]">Welcome back, {session.user.name?.split(' ')[0] || 'Mama'}.</h1>
+                <p className="text-muted-foreground">
+                    {todaysEntries > 0
+                        ? `You've logged ${todaysEntries} times today. Keeping the data flowing!`
+                        : "Ready to log your first entry for today?"}
+                </p>
             </div>
 
             {showOnboardingSuccess && (
@@ -34,7 +64,7 @@ export default async function DashboardPage({
             )}
 
             {/* ACTION BUTTONS */}
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
                 <Link href="/dashboard/tracking">
                     <Button className="bg-[var(--color-brand-rose)] hover:bg-[var(--color-brand-rose)]/90 text-white font-bold shadow-lg shadow-rose-200/50 transition-all hover:scale-105 active:scale-95">
                         + Log Entry
@@ -50,20 +80,19 @@ export default async function DashboardPage({
                         🖨️ Clinical Report
                     </Button>
                 </Link>
+
+                {/* FEEDBACK LOOP (Beta Polish) */}
+                <a href="mailto:support@vicessa.com?subject=My Weaning Story (Beta Feedback)" target="_blank">
+                    <Button variant="ghost" className="text-gray-500 hover:text-[var(--color-brand-rose)] gap-2">
+                        💌 Share Your Story
+                    </Button>
+                </a>
             </div>
 
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {/* Status Card */}
-                <Card className="bg-gradient-to-br from-[var(--color-brand-rose)] to-[var(--color-brand-gold)] text-white border-none">
-                    <CardHeader>
-                        <CardTitle className="text-white opacity-90">Current Goal</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-4xl font-bold mb-2">Day 12</div>
-                        <p className="opacity-80">Slow weaning phase. 3 feeds/day.</p>
-                    </CardContent>
-                </Card>
+                {/* Dynamic Insight Card - Smart Engine */}
+                <DynamicInsightCard insight={latestInsightRaw} />
 
 
                 {/* Tip of the Day - High contrast fix */}
@@ -78,12 +107,7 @@ export default async function DashboardPage({
                 <h3 className="text-lg font-semibold mb-6 text-[var(--foreground)] flex items-center gap-2">
                     <span>📈</span> Transition Trends
                 </h3>
-                <SubscriptionGate
-                    fallbackTitle="Unlock Your Trends"
-                    fallbackDescription="Upgrade to Vicessa Plus to see your weaning progress and cycle correlations."
-                >
-                    <OverviewCharts />
-                </SubscriptionGate>
+                <OverviewCharts />
             </div>
         </div>
     )

@@ -16,7 +16,7 @@ export default async function TrackerPage() {
     })
 
     const today = new Date()
-    const todayEntry = recentEntries.find(e => 
+    const todayEntry = recentEntries.find(e =>
         format(e.createdAt, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
     )
 
@@ -50,6 +50,14 @@ export default async function TrackerPage() {
                             <span className="text-gray-500">Mood</span>
                             <p className="text-xl font-bold">{todayEntry.moodLevel ?? 3}/5</p>
                         </div>
+                        <div className="bg-white p-3 rounded-xl">
+                            <span className="text-gray-500">Sleep</span>
+                            <p className="text-xl font-bold">{todayEntry.sleepHours ?? 0}h</p>
+                        </div>
+                        <div className="bg-white p-3 rounded-xl">
+                            <span className="text-gray-500">Quality</span>
+                            <p className="text-xl font-bold">{todayEntry.sleepQuality ?? 0}/5</p>
+                        </div>
                     </div>
                     {todayEntry.notes && (
                         <div className="mt-4 p-3 bg-white rounded-xl">
@@ -69,6 +77,8 @@ export default async function TrackerPage() {
                 discomfortLevel: todayEntry.discomfortLevel ?? 0,
                 moodLevel: todayEntry.moodLevel ?? 3,
                 stressLevel: todayEntry.stressLevel ?? 2,
+                sleepHours: todayEntry.sleepHours ?? 0,
+                sleepQuality: todayEntry.sleepQuality ?? 0,
                 notes: todayEntry.notes ?? ""
             } : null} />
 
@@ -86,11 +96,10 @@ export default async function TrackerPage() {
                                     </p>
                                 </div>
                                 <div className="text-right">
-                                    <span className={`px-2 py-1 rounded-full text-xs ${
-                                        (entry.discomfortLevel ?? 0) > 3 
-                                            ? "bg-red-100 text-red-700" 
-                                            : "bg-green-100 text-green-700"
-                                    }`}>
+                                    <span className={`px-2 py-1 rounded-full text-xs ${(entry.discomfortLevel ?? 0) > 3
+                                        ? "bg-red-100 text-red-700"
+                                        : "bg-green-100 text-green-700"
+                                        }`}>
                                         {(entry.discomfortLevel ?? 0) > 3 ? "High discomfort" : "Low discomfort"}
                                     </span>
                                 </div>

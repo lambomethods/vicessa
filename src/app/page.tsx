@@ -36,7 +36,7 @@ export default function Home() {
           </h1>
 
           <p className="text-xl text-[var(--foreground)]/80 max-w-lg leading-relaxed">
-            A secure platform to track symptoms, discover patterns, and navigate lactation transitions with confidence.
+            A secure platform to track personal signals, discover patterns, and navigate lactation transitions with clarity.
             <span className="block mt-4 text-sm font-medium opacity-60">intelligent • calm • empowering</span>
           </p>
 
@@ -51,6 +51,13 @@ export default function Home() {
                 Explore Vicessa
               </Button>
             </Link>
+          </div>
+          <div className="pt-4">
+            <a href="mailto:support@vicessa.com?subject=My Weaning Story (Beta Feedback)">
+              <Button variant="ghost" className="text-sm text-gray-500 hover:text-[var(--color-brand-rose)] gap-2">
+                💌 Share Your Story
+              </Button>
+            </a>
           </div>
         </div>
 
@@ -109,8 +116,8 @@ export default function Home() {
 
           {/* Floating Badge */}
           <div className="absolute -right-8 top-1/2 bg-white rounded-xl shadow-lg p-3 flex items-center gap-3 animate-bounce duration-[3000ms]">
-            <div className="w-3 h-3 rounded-full bg-green-400" />
-            <span className="text-sm font-semibold text-gray-600">Symptom Resolved</span>
+            <div className="w-3 h-3 rounded-full bg-blue-400" />
+            <span className="text-sm font-semibold text-gray-600">Pattern Shift Observed</span>
           </div>
         </div>
       </main>
@@ -124,7 +131,7 @@ export default function Home() {
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-3xl md:text-5xl font-bold text-[var(--foreground)] tracking-tight">Science, not speculation.</h2>
             <p className="text-lg text-[var(--foreground)]/60 max-w-2xl mx-auto">
-              Most apps focus on the baby. Vicessa focuses on <span className="font-semibold text-[var(--color-brand-rose)]">you</span>—the physiology of your transition.
+              Most apps focus on the baby. Vicessa focuses on <span className="font-semibold text-[var(--color-brand-rose)]">you</span>—the patterns of your transition.
             </p>
           </div>
 
@@ -134,20 +141,20 @@ export default function Home() {
               <div className="w-12 h-12 rounded-2xl bg-[var(--color-brand-rose-light)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">📉</span>
               </div>
-              <h3 className="text-xl font-bold text-[var(--foreground)] mb-3">Symptom Correlation</h3>
+              <h3 className="text-xl font-bold text-[var(--foreground)] mb-3">Pattern Correlation</h3>
               <p className="text-[var(--foreground)]/70 leading-relaxed">
-                Log physical biomarkers and emotional states. Our engine finds patterns between your weaning schedule and how you feel.
+                Log physical signals and emotional states. Vicessa highlights relationships between changes in routine and how you feel.
               </p>
             </div>
 
             {/* Feature 2 */}
             <div className="glass-panel p-8 rounded-3xl border border-white/60 hover:border-[var(--color-brand-sage)]/30 transition-all duration-500 hover:shadow-xl group">
               <div className="w-12 h-12 rounded-2xl bg-[var(--color-brand-sage-light)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <span className="text-2xl">🛡️</span>
+                <span className="text-2xl">🧭</span>
               </div>
-              <h3 className="text-xl font-bold text-[var(--foreground)] mb-3">Risk Monitoring</h3>
+              <h3 className="text-xl font-bold text-[var(--foreground)] mb-3">Signal Awareness</h3>
               <p className="text-[var(--foreground)]/70 leading-relaxed">
-                Early detection of mastitis symptoms and mood dips. Get gentle, clinically-informed alerts when you need to slow down.
+                Vicessa surfaces trends that some users choose to explore further with trusted professionals.
               </p>
             </div>
 
@@ -156,9 +163,9 @@ export default function Home() {
               <div className="w-12 h-12 rounded-2xl bg-[var(--color-brand-gold-light)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <span className="text-2xl">🧠</span>
               </div>
-              <h3 className="text-xl font-bold text-[var(--foreground)] mb-3">Guidance Engine</h3>
+              <h3 className="text-xl font-bold text-[var(--foreground)] mb-3">Adaptive Insights</h3>
               <p className="text-[var(--foreground)]/70 leading-relaxed">
-                No generic advice. Receive a tailored weaning timeline that adapts real-time to your body&apos;s feedback.
+                Instead of generic advice, Vicessa presents evolving patterns based on your personal data and peer trends.
               </p>
             </div>
           </div>

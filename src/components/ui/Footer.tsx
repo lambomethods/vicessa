@@ -7,7 +7,7 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     <div>
                         <h3 className="font-serif text-lg font-bold text-[var(--foreground)] mb-2">Vicessa</h3>
-                        <p className="text-sm text-gray-600">Science-backed weaning pathways using adaptive intelligence.</p>
+                        <p className="text-sm text-gray-600">Data-informed insights for lactation transitions.</p>
                     </div>
                     <div>
                         <h4 className="font-bold text-sm text-[var(--foreground)] mb-2 uppercase tracking-wider">Platform</h4>
@@ -26,14 +26,14 @@ export function Footer() {
                     </div>
                 </div>
 
-                {/* MASTER POSITIONING STATEMENT (REQUIRED) */}
                 <div className="border-t border-gray-200 pt-8 text-center text-xs text-gray-500 max-w-4xl mx-auto space-y-4">
                     <p>
                         © {new Date().getFullYear()} Vicessa Health. All rights reserved.
                     </p>
                     <p className="italic">
-                        Vicessa is a digital wellness and tracking platform designed to help users monitor personal lactation and weaning-related data.
-                        Vicessa <strong>does not separate medical diagnosis, treatment, or clinical advice</strong> and is not a substitute for professional healthcare consultation.
+                        Vicessa is a digital pattern recognition platform designed to help users observe and organize personal lactation-related data.
+                        Vicessa <strong>does not diagnose conditions, provide medical advice, or replace professional healthcare guidance</strong>.
+                        Users should consult qualified healthcare professionals regarding medical concerns.
                     </p>
                 </div>
             </div>

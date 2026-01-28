@@ -13,6 +13,8 @@ interface ExistingEntry {
     discomfortLevel: number
     moodLevel: number
     stressLevel: number
+    sleepHours?: number | null
+    sleepQuality?: number | null
     notes: string
 }
 
@@ -30,6 +32,8 @@ export function DailyLogForm({ existingEntry }: Props) {
         discomfortLevel: existingEntry?.discomfortLevel ?? 0,
         moodLevel: existingEntry?.moodLevel ?? 3,
         stressLevel: existingEntry?.stressLevel ?? 2,
+        sleepHours: existingEntry?.sleepHours ?? 0,
+        sleepQuality: existingEntry?.sleepQuality ?? 0,
         notes: existingEntry?.notes ?? ""
     })
 
@@ -109,7 +113,7 @@ export function DailyLogForm({ existingEntry }: Props) {
             {/* Physical */}
             <section className="space-y-4">
                 <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <span className="text-xl">💢</span> Physical Symptoms
+                    <span className="text-xl">💢</span> Physical Sensations
                 </h3>
                 <SliderInput
                     label="Breast Discomfort"
@@ -135,6 +139,34 @@ export function DailyLogForm({ existingEntry }: Props) {
                     value={formData.stressLevel}
                     onChange={v => setFormData({ ...formData, stressLevel: v })}
                     labels={["Calm", "Overwhelmed"]}
+                />
+            </section>
+
+            {/* Sleep */}
+            <section className="space-y-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="text-xl">🌙</span> Sleep & Rest
+                </h3>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Hours Slept</label>
+                    <div className="flex items-center gap-4">
+                        <input
+                            type="number"
+                            step="0.5"
+                            min="0"
+                            max="24"
+                            className="w-full p-4 rounded-xl border-2 border-gray-100 bg-gray-50 text-xl font-bold text-center focus:border-[var(--color-brand-rose)] outline-none"
+                            value={formData.sleepHours || ""}
+                            onChange={e => setFormData({ ...formData, sleepHours: parseFloat(e.target.value) || 0 })}
+                        />
+                        <span className="text-gray-500 font-medium">hrs</span>
+                    </div>
+                </div>
+                <SliderInput
+                    label="Quality"
+                    value={formData.sleepQuality || 3}
+                    onChange={v => setFormData({ ...formData, sleepQuality: v })}
+                    labels={["Restless", "Restored"]}
                 />
             </section>
 

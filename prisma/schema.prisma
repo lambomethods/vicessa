@@ -72,6 +72,9 @@ model TrackerEntry {
   moodLevel        Int?
   anxietyLevel     Int?
   
+  sleepHours       Float?
+  sleepQuality     Int?
+  
   babyFussiness    Int?
   solidFoodIntake  Int?
   babyDependency   String?

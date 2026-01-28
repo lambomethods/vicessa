@@ -1,102 +1,84 @@
 import { TrackerEntry } from "@prisma/client"
-import { FLAGS, isHighRisk } from "./flags"
+import { FLAGS } from "./flags"
 
-export type RiskTrend = "stable" | "declining" | "rapid_decline" | "improving"
-export type SymptomType = "mood" | "discomfort" | "supply"
+// NEUTRALITY ENFORCED: No medical terms.
+export type PatternType = "PATTERN_TIMING" | "ROUTINE_SHIFT" | "SILENT_CORRELATION" | "INFO"
 
 export interface InsightResult {
-    signalType: string // "trend_alert", "safety_check", "milestone"
-    message: string
-    severity: "low" | "medium" | "high"
+    signalType: PatternType | string
+    message: string // strictly observable facts
+    severity: "low" | "medium" // No "high"/danger in Stage 0/1
+    context?: string
+    prediction?: string // internal only
 }
 
 export class InsightEngine {
     /**
-     * Analyzes a new entry against historical context to detect meaningful patterns.
-     * @param safeAI - Concept: AI that surfaces patterns, it DOES NOT diagnose.
+     * Stage 1: Pattern Engine.
+     * Logic: If X (action) -> then Y (result).
+     * No diagnosis. No "Risk Scores".
      */
     static analyze(newEntry: TrackerEntry, history: TrackerEntry[]): InsightResult[] {
-        // 0. SAFETY KILL SWITCHES
         if (FLAGS.SAFE_MODE) return []
-
-        // 1. High Risk Check (Danger - Always Active)
-        if (newEntry.notes && isHighRisk([newEntry.notes])) {
-            return [{
-                signalType: "danger_alert",
-                message: "High-risk symptoms detected. Vicessa cannot provide guidance. Please contact a medical professional immediately.",
-                severity: "high"
-            }]
-        }
-
-        // 2. AI Kill Switch
-        if (!FLAGS.AI_ENABLED) {
-            return [{
-                signalType: "info",
-                message: "Automated insights are temporarily unavailable (Beta Mode). Please consult your healthcare provider.",
-                severity: "low"
-            }]
-        }
 
         const insights: InsightResult[] = []
 
-        // 1. Detect Discomfort Spike (Mastitis Risk Signal)
-        // If discomfort >= 4 AND it was <= 2 in the last 2 entries
-        const isSpike = this.detectSpike(newEntry, history, "discomfortLevel", 4, 2)
-        if (isSpike) {
+        // 1. ROUTINE SHIFT: Physical Intensity (formerly "Discomfort Spike")
+        // Logic: Metric > 4 AND consistent low history.
+        const isIntensitySpike = this.detectMetricVariability(newEntry, history, "discomfortLevel", 4, 2)
+        if (isIntensitySpike) {
             insights.push({
-                signalType: "health_pattern",
-                message: "Your discomfort levels have risen sharply. Please check for redness or heat.",
-                severity: "medium"
+                signalType: "ROUTINE_SHIFT",
+                message: "Sensing a shift. Similar variations in physical intensity are often logged by others at this stage.",
+                severity: "medium",
+                context: "Monitor for 24h."
             })
         }
 
-        // 2. Detect Emotional Drop (PPD/Anxiety Signal)
-        // If mood is consistently low (<3) for > 3 days
-        const isMoodLow = this.detectPersistentLow(newEntry, history, "moodLevel", 3, 3)
-        if (isMoodLow) {
+        // 2. PATTERN TIMING: Mood shifts (formerly "PPD Check")
+        // Logic: Consistent low < 3 for 3 days.
+        const isMoodShift = this.detectStableTrend(newEntry, history, "moodLevel", 3, 3)
+        if (isMoodShift) {
             insights.push({
-                signalType: "emotional_support",
-                message: "You've been reporting low mood for a few days. It might be time to prioritize rest or speak to a friend.",
-                severity: "medium"
+                signalType: "PATTERN_TIMING",
+                message: "Pattern observed. This sequence of mood entries aligns with common adjustments in our dataset.",
+                severity: "medium",
+                context: "Consider your rest schedule."
             })
         }
 
-        // 3. Positive Reinforcement (Milestone)
-        // If discomfort dropped from high to low over 3 entries
-        const isImproving = this.detectImprovement(newEntry, history, "discomfortLevel")
-        if (isImproving) {
-            insights.push({
-                signalType: "milestone",
-                message: "Great progress! Your discomfort levels are trending down.",
-                severity: "low"
-            })
-        }
+        // 3. SILENT CORRELATION ENGINE (The Core of Stage 1)
+        // Logic: Supply Drop (>1 feed) -> Watch 24-96h -> Check for Mood/Pain variance.
+        // We only LOG this. We do not show it to the user yet (Shadow Mode).
+        this.runShadowCorrelationCheck(newEntry, history, insights)
 
         return insights
     }
 
-    private static detectSpike(
+    // --- LOGIC KERNELS (Backend Only) ---
+
+    // Detects sudden shift from baseline
+    private static detectMetricVariability(
         current: TrackerEntry,
         history: TrackerEntry[],
         field: keyof TrackerEntry,
-        highThreshold: number,
-        lowThreshold: number
+        upperLimit: number,
+        baselineLimit: number
     ): boolean {
         const value = current[field] as number
-        if (!value || value < highThreshold) return false
+        if (!value || value < upperLimit) return false
 
-        // Check last 2 entries
         const recentHistory = history.slice(0, 2)
-        if (recentHistory.length === 0) return true // No history, but high value is technically a spike from 0
+        if (recentHistory.length === 0) return false
 
-        // If ALL recent entries were low, then this is a spike
         return recentHistory.every(entry => {
-            const histValue = entry[field] as number
-            return histValue !== null && histValue <= lowThreshold
+            const val = entry[field] as number
+            return val !== null && val <= baselineLimit
         })
     }
 
-    private static detectPersistentLow(
+    // Detects consistent trend (Stability)
+    private static detectStableTrend(
         current: TrackerEntry,
         history: TrackerEntry[],
         field: keyof TrackerEntry,
@@ -110,19 +92,69 @@ export class InsightEngine {
         if (recentHistory.length < days - 1) return false
 
         return recentHistory.every(entry => {
-            const histValue = entry[field] as number
-            return histValue !== null && histValue < threshold
+            const val = entry[field] as number
+            return val !== null && val < threshold
         })
     }
 
-    private static detectImprovement(current: TrackerEntry, history: TrackerEntry[], field: keyof TrackerEntry): boolean {
-        const currentVal = current[field] as number
-        if (currentVal === null || currentVal > 2) return false
+    // STAGE 1 CORE: The Correlation Logic
+    private static runShadowCorrelationCheck(
+        current: TrackerEntry,
+        history: TrackerEntry[],
+        insights: InsightResult[]
+    ) {
+        // Only run if we detect a "Reaction" (Mood or Pain intensity)
+        const isReaction = (current.moodLevel && current.moodLevel < 3) || (current.discomfortLevel && current.discomfortLevel > 3)
 
-        // Check if previous 2 entries were higher
-        const recentHistory = history.slice(0, 2)
-        if (recentHistory.length < 2) return false
+        if (isReaction) {
+            // Look back 24-96h for the "Trigger" (Feed Drop)
+            const trigger = this.findLaggedTrigger(history, "feedsCount", 24, 96)
 
-        return recentHistory.every(entry => (entry[field] as number) > currentVal)
+            if (trigger) {
+                insights.push({
+                    signalType: "SILENT_CORRELATION", // Client hides this
+                    message: "correlation_detected_internal",
+                    severity: "low",
+                    context: `Theory: Mood/Pain shift linked to -${trigger.dropAmount} feeds ${trigger.hoursAgo}h ago.`,
+                    prediction: "Validating correlation logic."
+                })
+            }
+        }
+    }
+
+    private static findLaggedTrigger(
+        history: TrackerEntry[],
+        field: keyof TrackerEntry,
+        minHours: number,
+        maxHours: number
+    ): { dropAmount: number, hoursAgo: number } | null {
+        if (history.length < 5) return null // Need data density
+
+        const now = new Date().getTime()
+        const msPerHour = 3600 * 1000
+
+        // Isolate the Window
+        const windowEntries = history.filter(entry => {
+            const age = (now - entry.createdAt.getTime()) / msPerHour
+            return age >= minHours && age <= maxHours
+        })
+
+        if (windowEntries.length < 2) return null
+
+        // Detect Drop Event in Window (> 1 unit drop between adjacent entries)
+        for (let i = 0; i < windowEntries.length - 1; i++) {
+            const newer = windowEntries[i]
+            const older = windowEntries[i + 1]
+
+            const newerVal = newer[field] as number || 0
+            const olderVal = older[field] as number || 0
+
+            if (olderVal - newerVal >= 1) {
+                const age = Math.round((now - newer.createdAt.getTime()) / msPerHour)
+                return { dropAmount: olderVal - newerVal, hoursAgo: age }
+            }
+        }
+
+        return null
     }
 }
