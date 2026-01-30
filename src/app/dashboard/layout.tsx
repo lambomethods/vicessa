@@ -19,7 +19,7 @@ export default async function DashboardLayout({
             {/* Sidebar - Desktop */}
             <aside className="hidden w-64 border-r border-gray-200 dark:border-gray-800 lg:block flex-col">
                 <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-800">
-                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                    <Link href="/dashboard" className="hover:opacity-80 transition-opacity">
                         <Logo className="w-8 h-8" />
                     </Link>
                 </div>

@@ -1,8 +1,13 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/Button"
 import { Logo } from "@/components/brand/Logo"
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+  if (session) redirect("/dashboard")
+
   return (
     <div className="min-h-screen bg-[var(--background)] flex flex-col overflow-hidden">
       {/* Navbar - Minimal & Glass */}

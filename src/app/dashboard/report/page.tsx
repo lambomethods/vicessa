@@ -36,7 +36,7 @@ export default async function DoctorReportPage() {
             {/* Print Control - Hidden when printing */}
             <div className="mb-8 flex justify-between items-center print:hidden border-b pb-4 border-gray-200">
                 <div>
-                    <h1 className="text-2xl font-bold text-[var(--color-brand-eucalyptus)]">Clinical Report</h1>
+                    <h1 className="text-2xl font-bold text-[var(--color-brand-eucalyptus)]">Pattern Report</h1>
                     <p className="text-gray-500">Preview mode. Click print to generate PDF.</p>
                 </div>
                 <PrintButton />
@@ -45,7 +45,7 @@ export default async function DoctorReportPage() {
             {/* REPORT HEADER */}
             <div className="mb-8 border-b-2 border-black pb-4 flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-serif font-bold mb-1">Vicessa Clinical Snapshot</h1>
+                    <h1 className="text-3xl font-serif font-bold mb-1">Vicessa Transition Snapshot</h1>
                     <p className="text-sm text-gray-600">Generated: {format(new Date(), "MMMM d, yyyy")}</p>
                 </div>
                 <div className="text-right">

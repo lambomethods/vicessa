@@ -45,7 +45,7 @@ export default async function DashboardPage({
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-bold text-[var(--foreground)]">Welcome back, {session.user.name?.split(' ')[0] || 'Mama'}.</h1>
+                <h2 className="text-xl font-bold font-serif text-[var(--foreground)]">Transition Snapshot</h2>
                 <p className="text-muted-foreground">
                     {todaysEntries > 0
                         ? `You've logged ${todaysEntries} times today. Keeping the data flowing!`
@@ -77,7 +77,7 @@ export default async function DashboardPage({
                 </Link>
                 <Link href="/dashboard/report">
                     <Button variant="outline" className="border-[var(--color-brand-sage)] text-[var(--color-brand-eucalyptus)] hover:bg-[var(--color-brand-mist)] gap-2">
-                        🖨️ Clinical Report
+                        🖨️ Full Report
                     </Button>
                 </Link>
 
