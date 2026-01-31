@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
 import { Input } from "@/components/ui/Input" // Assuming we might want to edit name later, but read-only for now is fine
 
+import Link from "next/link"
+
 export default async function SettingsPage() {
     const session = await auth()
     if (!session?.user?.id) redirect("/login")
@@ -16,6 +18,15 @@ export default async function SettingsPage() {
 
     return (
         <div className="container mx-auto p-6 max-w-2xl space-y-8 pb-24">
+            {/* Nav Back */}
+            <div>
+                <Link href="/dashboard">
+                    <Button variant="ghost" className="pl-0 hover:bg-transparent hover:text-[var(--color-brand-rose)] text-gray-500 gap-2">
+                        ← Back to Dashboard
+                    </Button>
+                </Link>
+            </div>
+
             <div className="space-y-1">
                 <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">Settings</h1>
                 <p className="text-gray-500">Manage your account and preferences.</p>
