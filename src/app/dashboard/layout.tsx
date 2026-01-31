@@ -53,13 +53,18 @@ export default async function DashboardLayout({
                 </div>
             </aside>
 
+            import {MobileNav} from "@/components/layout/MobileNav"
+
+            // ... (in the layout function)
+
             {/* Main Content */}
             <main className="flex-1 overflow-y-auto">
                 {/* Mobile Header */}
-                <div className="lg:hidden h-14 border-b flex items-center px-4 bg-white/80 backdrop-blur sticky top-0 z-30">
+                <div className="lg:hidden h-14 border-b flex items-center px-4 bg-white/80 backdrop-blur sticky top-0 z-30 justify-between">
                     <Link href="/" className="hover:opacity-80 transition-opacity">
                         <Logo className="w-6 h-6" />
                     </Link>
+                    <MobileNav />
                 </div>
                 <div className="container mx-auto p-4 md:p-8 max-w-5xl animate-fade-in">
                     {children}
