@@ -22,22 +22,22 @@ export default async function SettingsPage() {
             </div>
 
             {/* PROFILE CARD */}
-            <Card className="bg-white text-black border border-gray-200">
+            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
                 <CardHeader>
-                    <CardTitle className="text-black">My Profile</CardTitle>
+                    <CardTitle className="text-white">My Profile</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-2">
-                        <label className="text-sm font-medium text-gray-700">Full Name</label>
-                        <Input value={user?.name || ""} disabled className="bg-gray-50 text-black border-gray-300" />
-                        <p className="text-xs text-gray-500">To change your name, please contact support during Beta.</p>
+                        <label className="text-sm font-medium text-gray-200">Full Name</label>
+                        <Input value={user?.name || ""} disabled className="bg-white text-black border-none font-medium" />
+                        <p className="text-xs text-gray-400">To change your name, please contact support during Beta.</p>
                     </div>
                     <div className="grid gap-2">
-                        <label className="text-sm font-medium text-gray-700">Email Address</label>
-                        <Input value={user?.email || ""} disabled className="bg-gray-50 text-black border-gray-300" />
+                        <label className="text-sm font-medium text-gray-200">Email Address</label>
+                        <Input value={user?.email || ""} disabled className="bg-white text-black border-none font-medium" />
                     </div>
                     <div className="grid gap-2">
-                        <label className="text-sm font-medium text-gray-700">Membership Tier</label>
+                        <label className="text-sm font-medium text-gray-200">Membership Tier</label>
                         <div className="px-3 py-2 bg-[var(--color-brand-mist)] rounded-md border border-[var(--color-brand-sage)]/20 text-[var(--color-brand-eucalyptus)] font-bold flex items-center gap-2">
                             <span>🦄</span> Beta Tester (All Features Unlocked)
                         </div>
@@ -46,31 +46,31 @@ export default async function SettingsPage() {
             </Card>
 
             {/* DATA & PRIVACY */}
-            <Card className="bg-white text-black border border-gray-200">
+            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
                 <CardHeader>
-                    <CardTitle className="text-black">Data & Privacy</CardTitle>
+                    <CardTitle className="text-white">Data & Privacy</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div className="flex items-center justify-between p-4 border border-white/20 rounded-lg bg-black/20">
                         <div>
-                            <h4 className="font-semibold text-black">Export My Data</h4>
-                            <p className="text-sm text-gray-600">Download a copy of your tracking history (JSON).</p>
+                            <h4 className="font-semibold text-white">Export My Data</h4>
+                            <p className="text-sm text-gray-300">Download a copy of your tracking history (JSON).</p>
                         </div>
                         <form action="/api/admin/export-data" method="GET">
                             {/* In a real app we'd need a specific user-export endpoint, reusing admin for MVP demo if appropriate or simple alert */}
                             {/* For now, let's just put a placeholder button that alerts or a 'Request' button */}
-                            <Button variant="outline" type="button" className="opacity-50 cursor-not-allowed text-black border-gray-300">
+                            <Button variant="outline" type="button" className="opacity-50 cursor-not-allowed text-white border-white/30 hover:bg-white/10">
                                 Download
                             </Button>
                         </form>
                     </div>
 
-                    <div className="flex items-center justify-between p-4 border border-red-100 bg-red-50 rounded-lg">
+                    <div className="flex items-center justify-between p-4 border border-red-900/30 bg-red-950/30 rounded-lg">
                         <div>
-                            <h4 className="font-semibold text-red-900">Delete Account</h4>
-                            <p className="text-sm text-red-700">Permanently remove all data. This cannot be undone.</p>
+                            <h4 className="font-semibold text-red-200">Delete Account</h4>
+                            <p className="text-sm text-red-300">Permanently remove all data. This cannot be undone.</p>
                         </div>
-                        <Button variant="danger" className="bg-red-600 hover:bg-red-700 text-white border-none">
+                        <Button variant="danger" className="bg-red-600 hover:bg-red-700 text-white border-none shadow-lg shadow-red-900/20">
                             Delete Account
                         </Button>
                     </div>
