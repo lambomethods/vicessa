@@ -2,6 +2,7 @@ import { auth } from "@/auth"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { Logo } from "@/components/brand/Logo"
+import { MobileNav } from "@/components/layout/MobileNav"
 
 export default async function DashboardLayout({
     children,
@@ -52,10 +53,6 @@ export default async function DashboardLayout({
                     </div>
                 </div>
             </aside>
-
-            import {MobileNav} from "@/components/layout/MobileNav"
-
-            // ... (in the layout function)
 
             {/* Main Content */}
             <main className="flex-1 overflow-y-auto">
