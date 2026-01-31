@@ -10,11 +10,10 @@ export function Footer() {
                         <p className="text-sm text-gray-600">Data-informed insights for lactation transitions.</p>
                     </div>
                     <div>
-                        <h4 className="font-bold text-sm text-[var(--foreground)] mb-2 uppercase tracking-wider">Platform</h4>
+                        <h4 className="font-bold text-sm text-[var(--foreground)] mb-2 uppercase tracking-wider">Support</h4>
                         <ul className="space-y-2 text-sm text-gray-600">
-                            <li><Link href="/pricing" className="hover:text-[var(--color-brand-rose)]">Pricing</Link></li>
-                            <li><Link href="/login" className="hover:text-[var(--color-brand-rose)]">Login</Link></li>
-                            <li><Link href="/register" className="hover:text-[var(--color-brand-rose)]">Get Started</Link></li>
+                            <li><a href="mailto:support@vicessa.com" className="hover:text-[var(--color-brand-rose)]">Beta Support</a></li>
+                            <li><a href="mailto:support@vicessa.com?subject=My%20Story" className="hover:text-[var(--color-brand-rose)]">Share Your Story</a></li>
                         </ul>
                     </div>
                     <div>
