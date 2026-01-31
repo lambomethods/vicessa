@@ -3,6 +3,9 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/db"
 import { CommunityFeed } from "@/components/community/CommunityFeed"
 
+import Link from "next/link"
+import { Button } from "@/components/ui/Button"
+
 export default async function CommunityPage() {
     const session = await auth()
     if (!session?.user?.id) redirect("/login")
@@ -24,6 +27,14 @@ export default async function CommunityPage() {
 
     return (
         <div className="container mx-auto p-6 max-w-2xl space-y-8 pb-24 animate-fade-in">
+            {/* Nav Back */}
+            <div>
+                <Link href="/dashboard">
+                    <Button variant="ghost" className="pl-0 hover:bg-transparent hover:text-[var(--color-brand-rose)] text-gray-500 gap-2">
+                        ← Back to Dashboard
+                    </Button>
+                </Link>
+            </div>
             <div className="space-y-1">
                 <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">Community</h1>
                 <p className="text-gray-500">You are not alone. Share your journey.</p>
