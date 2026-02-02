@@ -50,7 +50,7 @@ export default async function SettingsPage() {
                     <div className="grid gap-2">
                         <label className="text-sm font-medium text-gray-200">Membership Tier</label>
                         <div className="px-3 py-2 bg-[var(--color-brand-mist)] rounded-md border border-[var(--color-brand-sage)]/20 text-[var(--color-brand-eucalyptus)] font-bold flex items-center gap-2">
-                            <span>🦄</span> Beta Tester (All Features Unlocked)
+                            <span>✨</span> Beta Tester (All Features Unlocked)
                         </div>
                     </div>
                 </CardContent>
@@ -67,13 +67,11 @@ export default async function SettingsPage() {
                             <h4 className="font-semibold text-white">Export My Data</h4>
                             <p className="text-sm text-gray-300">Download a copy of your tracking history (JSON).</p>
                         </div>
-                        <form action="/api/admin/export-data" method="GET">
-                            {/* In a real app we'd need a specific user-export endpoint, reusing admin for MVP demo if appropriate or simple alert */}
-                            {/* For now, let's just put a placeholder button that alerts or a 'Request' button */}
-                            <Button variant="outline" type="button" className="opacity-50 cursor-not-allowed text-white border-white/30 hover:bg-white/10">
-                                Download
+                        <a href="mailto:support@vicessa.app?subject=Request Data Export&body=Please send me a copy of my data." className="inline-block">
+                            <Button variant="outline" type="button" className="text-white border-white/30 hover:bg-white/10">
+                                Request
                             </Button>
-                        </form>
+                        </a>
                     </div>
 
                     <div className="flex items-center justify-between p-4 border border-red-900/30 bg-red-950/30 rounded-lg">
@@ -81,9 +79,11 @@ export default async function SettingsPage() {
                             <h4 className="font-semibold text-red-200">Delete Account</h4>
                             <p className="text-sm text-red-300">Permanently remove all data. This cannot be undone.</p>
                         </div>
-                        <Button variant="danger" className="bg-red-600 hover:bg-red-700 text-white border-none shadow-lg shadow-red-900/20">
-                            Delete Account
-                        </Button>
+                        <a href="mailto:support@vicessa.app?subject=DELETE ACCOUNT REQUEST&body=I want to permanently delete my account." className="inline-block">
+                            <Button variant="danger" className="bg-red-600 hover:bg-red-700 text-white border-none shadow-lg shadow-red-900/20">
+                                Contact to Delete
+                            </Button>
+                        </a>
                     </div>
                 </CardContent>
             </Card>
