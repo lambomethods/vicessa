@@ -33,11 +33,20 @@ export default async function DashboardPage({
     // 2. Fetch User Stats (Streak/Counts)
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    const todaysEntries = await prisma.trackerEntry.count({
+    const todaysEntriesCount = await prisma.trackerEntry.count({
         where: {
             userId: session.user.id,
             createdAt: { gte: today }
         }
+    })
+
+    const latestEntry = await prisma.trackerEntry.findFirst({
+        where: {
+            userId: session.user.id,
+            createdAt: { gte: today }
+        },
+        orderBy: { createdAt: 'desc' },
+        select: { sleepHours: true }
     })
 
     // TODO: move logic to separate data-access layer later
@@ -46,11 +55,18 @@ export default async function DashboardPage({
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col gap-2">
                 <h2 className="text-xl font-bold font-serif text-[var(--foreground)]">Transition Snapshot</h2>
-                <p className="text-muted-foreground">
-                    {todaysEntries > 0
-                        ? `You've logged ${todaysEntries} times today. Keeping the data flowing!`
-                        : "Ready to log your first entry for today?"}
-                </p>
+                <div className="text-muted-foreground">
+                    <p>
+                        {todaysEntriesCount > 0
+                            ? `You've logged ${todaysEntriesCount} times today. Keeping the data flowing!`
+                            : "Ready to log your first entry for today?"}
+                    </p>
+                    {latestEntry?.sleepHours !== null && latestEntry?.sleepHours !== undefined && (
+                        <p className="text-sm font-medium text-blue-600 mt-1">
+                            💤 Last Sleep Logged: {latestEntry.sleepHours} hrs
+                        </p>
+                    )}
+                </div>
             </div>
 
             {showOnboardingSuccess && (
@@ -82,9 +98,9 @@ export default async function DashboardPage({
                 </Link>
 
                 {/* FEEDBACK LOOP (Beta Polish) */}
-                <a href="mailto:support@vicessa.com?subject=My Weaning Story (Beta Feedback)" target="_blank">
+                <a href="mailto:support@vicessa.app?subject=Feedback" target="_blank">
                     <Button variant="ghost" className="text-gray-500 hover:text-[var(--color-brand-rose)] gap-2">
-                        💌 Share Your Story
+                        💌 Help & Feedback
                     </Button>
                 </a>
             </div>
