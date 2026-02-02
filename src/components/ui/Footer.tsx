@@ -12,8 +12,8 @@ export function Footer() {
                     <div>
                         <h4 className="font-bold text-sm text-[var(--foreground)] mb-2 uppercase tracking-wider">Support</h4>
                         <ul className="space-y-2 text-sm text-gray-600">
-                            <li><a href="mailto:support@vicessa.com" className="hover:text-[var(--color-brand-rose)]">Beta Support</a></li>
-                            <li><a href="mailto:support@vicessa.com?subject=My%20Story" className="hover:text-[var(--color-brand-rose)]">Share Your Story</a></li>
+                            <li><a href="mailto:support@vicessa.app" className="hover:text-[var(--color-brand-rose)]">Beta Support</a></li>
+                            <li><a href="mailto:support@vicessa.app?subject=My%20Story" className="hover:text-[var(--color-brand-rose)]">Share Your Story</a></li>
                         </ul>
                     </div>
                     <div>
