@@ -54,6 +54,12 @@ export default async function DoctorReportPage() {
                 </div>
             </div>
 
+            {/* Provider Note (Safe Sharing Instruction) */}
+            <div className="mb-8 p-4 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-800 print:hidden">
+                <span className="font-bold">💡 Pro Tip:</span> You can print this report or save it as a PDF to bring to your next appointment.
+                It helps you describe your journey without having to rely on memory alone.
+            </div>
+
             {/* SUMMARY STATS */}
             <div className="grid grid-cols-3 gap-6 mb-8 text-center print:grid-cols-3">
                 <div className="bg-gray-50 p-4 border border-gray-200 rounded-lg print:border-black print:bg-white">
