@@ -58,9 +58,9 @@ export default async function Home() {
             </Link>
           </div>
           <div className="pt-4">
-            <a href="mailto:support@vicessa.app?subject=My Weaning Story (Beta Feedback)">
+            <a href="mailto:support@vicessa.app?subject=Beta Feedback">
               <Button variant="ghost" className="text-sm text-gray-500 hover:text-[var(--color-brand-rose)] gap-2">
-                💌 Share Your Story
+                💌 Help & Feedback
               </Button>
             </a>
           </div>
