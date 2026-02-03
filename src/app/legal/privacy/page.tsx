@@ -18,6 +18,9 @@ export default function PrivacyPage() {
                     <li><strong>Usage Data:</strong> Analytics, device information, and interaction logs.</li>
                     <li><strong>Payment Data:</strong> Processed securely via Stripe (we do not store full credit card numbers).</li>
                 </ul>
+                <div className="bg-gray-50 p-4 rounded-lg text-sm border border-gray-100 mt-4">
+                    <p><strong>1.1 AI & Research Data (Optional):</strong> If you explicitly opt-in during registration or in settings, we may use your anonymized pattern data (e.g., correlations between mood and feeds) to improve our predictive AI models. You may withdraw this consent at any time, and your data will be excluded from future training sets.</p>
+                </div>
             </section>
 
             <section className="space-y-4">

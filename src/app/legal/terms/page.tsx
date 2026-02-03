@@ -60,6 +60,11 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-4">
+                <h2 className="text-xl font-bold font-serif">8. AI & Aggregate Data</h2>
+                <p>If you opt-in to AI training, you grant Vicessa a non-exclusive, perpetual, worldwide license to use your anonymized data for the purpose of improving our algorithms. You retain ownership of your personal data, but Vicessa owns the aggregated insights and machine learning models derived from the collective dataset.</p>
+            </section>
+
+            <section className="space-y-4">
                 <h2 className="text-xl font-bold font-serif">8. Arbitration & Governing Law</h2>
                 <p>Any disputes shall be resolved through binding arbitration under the laws of the State of Delaware.</p>
             </section>
