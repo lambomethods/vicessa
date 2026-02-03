@@ -63,14 +63,16 @@ export default function RegisterPage() {
         <div className="min-h-screen flex items-center justify-center bg-[var(--background)] p-4">
             <Card className="w-full max-w-md shadow-xl border-none bg-white text-black">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
-                    <p className="text-center text-gray-500">Enter your details below to start your journey</p>
+                    <CardTitle className="text-2xl font-serif text-brand-eucalyptus text-center text-gray-900">Create an account</CardTitle>
+                    <CardDescription className="text-center text-gray-600">
+                        Enter your details below to start your journey
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Name field removed for privacy/anonymity - System Generated IDs only */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">Email</label>
+                            <label className="text-sm font-medium leading-none text-gray-900">Email</label>
                             <Input
                                 type="email"
                                 placeholder="m@example.com"
@@ -81,8 +83,7 @@ export default function RegisterPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">Password</label>
-                            <label className="text-sm font-medium leading-none">Password</label>
+                            <label className="text-sm font-medium leading-none text-gray-900">Password</label>
                             <PasswordInput
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -92,7 +93,7 @@ export default function RegisterPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">Invite Code (Beta)</label>
+                            <label className="text-sm font-medium leading-none text-gray-900">Invite Code (Beta)</label>
                             <Input
                                 value={formData.inviteCode}
                                 onChange={(e) => setFormData({ ...formData, inviteCode: e.target.value })}
