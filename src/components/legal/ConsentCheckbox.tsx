@@ -22,7 +22,7 @@ export function ConsentCheckbox({ onConsentChange }: ConsentCheckboxProps) {
     }, [medicalConfirmed, termsConfirmed, privacyConfirmed, onConsentChange])
 
     return (
-        <div className="space-y-3 bg-[var(--color-brand-mist)]/50 p-4 rounded-lg border border-[var(--color-brand-sage)]/30 mt-4">
+        <div className="space-y-3 bg-[var(--color-brand-mist)]/50 dark:bg-gray-50 p-4 rounded-lg border border-[var(--color-brand-sage)]/30 mt-4">
             {/* 1. Medical Disclaimer Check */}
             <div className="flex items-start space-x-3">
                 <input
