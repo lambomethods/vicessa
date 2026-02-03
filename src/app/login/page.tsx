@@ -42,31 +42,32 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[var(--background)] p-4">
-            <Card className="w-full max-w-md shadow-xl border-none">
+            <Card className="w-full max-w-md shadow-xl border-none bg-white text-black">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold text-center">Welcome back</CardTitle>
-                    <p className="text-center text-gray-500">Sign in to your account</p>
+                    <CardTitle className="text-2xl font-bold text-center text-gray-900">Welcome back</CardTitle>
+                    <p className="text-center text-gray-600">Sign in to your account</p>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">Email</label>
+                            <label className="text-sm font-medium leading-none text-gray-900">Email</label>
                             <Input
                                 type="email"
                                 placeholder="m@example.com"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 required
+                                className="bg-white text-black border-gray-300 placeholder:text-gray-400"
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">Password</label>
-                            <label className="text-sm font-medium leading-none">Password</label>
+                            <label className="text-sm font-medium leading-none text-gray-900">Password</label>
                             <PasswordInput
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                 placeholder="••••••"
                                 required
+                                className="bg-white text-black border-gray-300 placeholder:text-gray-400"
                             />
                         </div>
 
