@@ -77,6 +77,7 @@ export default function RegisterPage() {
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 required
+                                className="bg-white text-black border-gray-300 placeholder:text-gray-400"
                             />
                         </div>
                         <div className="space-y-2">
@@ -87,6 +88,7 @@ export default function RegisterPage() {
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                 placeholder="••••••"
                                 required
+                                className="bg-white text-black border-gray-300 placeholder:text-gray-400"
                             />
                         </div>
                         <div className="space-y-2">
@@ -96,6 +98,7 @@ export default function RegisterPage() {
                                 onChange={(e) => setFormData({ ...formData, inviteCode: e.target.value })}
                                 placeholder="VICESSA2026"
                                 required
+                                className="bg-white text-black border-gray-300 placeholder:text-gray-400"
                             />
                         </div>
 
