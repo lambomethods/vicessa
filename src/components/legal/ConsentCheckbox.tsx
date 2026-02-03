@@ -79,7 +79,7 @@ export function ConsentCheckbox({ onConsentChange }: ConsentCheckboxProps) {
                     <span className="flex items-center gap-1 font-bold text-[var(--color-brand-eucalyptus)] text-xs mb-1">
                         <Sparkles className="w-3 h-3" /> OPTIONAL: Help us learn
                     </span>
-                    I allow my anonymized patterns to satisfy my curiosity and improve Vicessa's maternal health prediction models.
+                    I allow my anonymized patterns to satisfy my curiosity and improve Vicessa's accuracy and insights.
                 </label>
             </div>
         </div>
