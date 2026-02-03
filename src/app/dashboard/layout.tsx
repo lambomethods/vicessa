@@ -47,7 +47,7 @@ export default async function DashboardLayout({
                     <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-[var(--color-brand-rose-light)]" />
                         <div className="text-sm">
-                            <p className="font-medium">{session.user?.name || 'User'}</p>
+                            <p className="font-medium">Vicessa Member</p>
                             <p className="text-xs text-gray-500 truncate w-32">{session.user?.email}</p>
                         </div>
                     </div>
