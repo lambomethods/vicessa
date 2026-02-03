@@ -19,7 +19,7 @@ export default function PrivacyPage() {
                     </ul>
                 </ul>
                 <div className="bg-gray-50 p-4 rounded-lg text-sm border border-gray-100 mt-4">
-                    <p><strong>1.1 AI & Research Data (Optional):</strong> If you explicitly opt-in during registration or in settings, we may use your anonymized pattern data (e.g., correlations between mood and feeds) to improve our predictive AI models. You may withdraw this consent at any time, and your data will be excluded from future training sets.</p>
+                    <p><strong>1.1 AI & Research Data (Optional):</strong> If you explicitly opt-in during registration or in settings, we may use your anonymized pattern data to improve the accuracy and insights of the Vicessa platform. You may withdraw this consent at any time, and your data will be excluded from future training sets.</p>
                 </div>
             </section>
 
