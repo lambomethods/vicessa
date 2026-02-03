@@ -14,6 +14,7 @@ model User {
   name      String?
   role      String   @default("user")
   image     String?
+  aiDataConsent Boolean @default(false)
   
   emailVerifiedAt     DateTime?
   passwordResetToken  String?   @unique

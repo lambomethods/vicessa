@@ -12,7 +12,7 @@ import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
     const router = useRouter()
-    const [formData, setFormData] = useState({ email: "", password: "", inviteCode: "" })
+    const [formData, setFormData] = useState({ email: "", password: "", inviteCode: "", aiDataConsent: false })
     const [consentAccepted, setConsentAccepted] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -103,7 +103,10 @@ export default function RegisterPage() {
                             />
                         </div>
 
-                        <ConsentCheckbox onConsentChange={setConsentAccepted} />
+                        <ConsentCheckbox onConsentChange={(isValid, aiConsent) => {
+                            setConsentAccepted(isValid)
+                            setFormData((prev) => ({ ...prev, aiDataConsent: aiConsent }))
+                        }} />
 
                         {error && <p className="text-sm text-red-500">{error}</p>}
 
