@@ -12,7 +12,7 @@ import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
     const router = useRouter()
-    const [formData, setFormData] = useState({ name: "", email: "", password: "", inviteCode: "" })
+    const [formData, setFormData] = useState({ email: "", password: "", inviteCode: "" })
     const [consentAccepted, setConsentAccepted] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -68,15 +68,7 @@ export default function RegisterPage() {
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium leading-none">Name</label>
-                            <Input
-                                placeholder="Jane Doe"
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                required
-                            />
-                        </div>
+                        {/* Name field removed for privacy/anonymity - System Generated IDs only */}
                         <div className="space-y-2">
                             <label className="text-sm font-medium leading-none">Email</label>
                             <Input
