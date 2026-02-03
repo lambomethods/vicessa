@@ -61,7 +61,7 @@ export default function RegisterPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[var(--background)] p-4">
-            <Card className="w-full max-w-md shadow-xl border-none">
+            <Card className="w-full max-w-md shadow-xl border-none bg-white text-black">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
                     <p className="text-center text-gray-500">Enter your details below to start your journey</p>
