@@ -12,11 +12,11 @@ export default function PrivacyPage() {
             <section className="space-y-4">
                 <h2 className="text-xl font-bold font-serif">1. Data We Collect</h2>
                 <ul className="list-disc pl-5 space-y-2">
-                    <li><strong>Personal Information:</strong> Name, email address (for account management).</li>
-                    <li><strong>Health-Related Inputs:</strong> Symptoms, mood, lactation logs, and weaning goals.</li>
-                    <li><strong>Child-Related Data:</strong> Age, feeding milestones (stored in non-identifiable formats where possible).</li>
-                    <li><strong>Usage Data:</strong> Analytics, device information, and interaction logs.</li>
-                    <li><strong>Payment Data:</strong> Processed securely via Stripe (we do not store full credit card numbers).</li>
+                    <ul className="list-disc pl-5 space-y-2">
+                        <li><strong>Personal Information:</strong> Email address (for account management only).</li>
+                        <li><strong>Personal Patterns:</strong> Mood, lactation logs, and weaning goals (anonymized/encrypted).</li>
+                        <li><strong>Usage Data:</strong> Analytics, device information, and interaction logs.</li>
+                    </ul>
                 </ul>
                 <div className="bg-gray-50 p-4 rounded-lg text-sm border border-gray-100 mt-4">
                     <p><strong>1.1 AI & Research Data (Optional):</strong> If you explicitly opt-in during registration or in settings, we may use your anonymized pattern data (e.g., correlations between mood and feeds) to improve our predictive AI models. You may withdraw this consent at any time, and your data will be excluded from future training sets.</p>
@@ -52,7 +52,6 @@ export default function PrivacyPage() {
                 <h2 className="text-xl font-bold font-serif">6. Third-Party Services</h2>
                 <p>We utilize the following trusted partners:</p>
                 <ul className="list-disc pl-5 space-y-1">
-                    <li><strong>Stripe:</strong> Payment processing.</li>
                     <li><strong>Resend / Firebase:</strong> Notifications and transactional emails.</li>
                     <li><strong>Vercel / AWS:</strong> Hosting and infrastructure.</li>
                 </ul>
