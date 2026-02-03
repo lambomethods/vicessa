@@ -10,9 +10,9 @@ import { getLiveTip, Tip } from "@/lib/tips-engine"
 interface ExistingEntry {
     feedsCount: number
     pumpSessions: number
-    discomfortLevel: number
-    moodLevel: number
-    stressLevel: number
+    discomfortLevel: number | null
+    moodLevel: number | null
+    stressLevel: number | null
     sleepHours?: number | null
     sleepQuality?: number | null
     notes: string
@@ -29,11 +29,11 @@ export function DailyLogForm({ existingEntry }: Props) {
     const [formData, setFormData] = useState({
         feedsCount: existingEntry?.feedsCount ?? 0,
         pumpSessions: existingEntry?.pumpSessions ?? 0,
-        discomfortLevel: existingEntry?.discomfortLevel ?? 0,
-        moodLevel: existingEntry?.moodLevel ?? 3,
-        stressLevel: existingEntry?.stressLevel ?? 2,
+        discomfortLevel: existingEntry?.discomfortLevel ?? null,
+        moodLevel: existingEntry?.moodLevel ?? null,
+        stressLevel: existingEntry?.stressLevel ?? null,
         sleepHours: existingEntry?.sleepHours ?? 0,
-        sleepQuality: existingEntry?.sleepQuality ?? 0,
+        sleepQuality: existingEntry?.sleepQuality ?? null,
         notes: existingEntry?.notes ?? ""
     })
 
@@ -50,6 +50,12 @@ export function DailyLogForm({ existingEntry }: Props) {
     }, [discomfortLevel, moodLevel, feedsCount])
 
     const handleSubmit = async () => {
+        // Validation: Ensure sliders are set
+        if (formData.moodLevel === null || formData.stressLevel === null || formData.discomfortLevel === null) {
+            alert("Please select values for Mood, Stress, and Physical Sensations.")
+            return
+        }
+
         setLoading(true)
         setSaved(false)
         try {
