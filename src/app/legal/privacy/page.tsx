@@ -24,8 +24,8 @@ export default function PrivacyPage() {
             </section>
 
             <section className="space-y-4">
-                <h2 className="text-xl font-bold font-serif">2. Sensitive Data & HIPAA</h2>
-                <p>Vicessa does not store medical records or provide clinical data services. While we treat your health data with encryption and security matching HIPAA technical standards, your use of the app for personal tracking places it outside standard HIPAA &quot;Covered Entity&quot; regulations.</p>
+                <h2 className="text-xl font-bold font-serif">2. Sensitive Personal Data</h2>
+                <p>Vicessa stores your tracking data (e.g., mood, weaning logs) securely using industry-standard encryption. <strong>This data is for personal self-tracking only and is not a medical record.</strong> We do not provide clinical data services or diagnosis.</p>
             </section>
 
             <section className="space-y-4">
