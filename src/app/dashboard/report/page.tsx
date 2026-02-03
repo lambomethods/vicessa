@@ -53,7 +53,7 @@ export default async function DoctorReportPage() {
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="font-bold">{user?.name || "Patient"}</p>
+                    <p className="font-bold">Vicessa Member</p>
                     <p className="text-sm text-gray-600">Goal: {user?.profile?.primaryGoal || "N/A"}</p>
                 </div>
             </div>
@@ -88,7 +88,7 @@ export default async function DoctorReportPage() {
                         <th className="py-2 font-bold uppercase text-xs w-16">Feeds</th>
                         <th className="py-2 font-bold uppercase text-xs w-24">Pain (0-5)</th>
                         <th className="py-2 font-bold uppercase text-xs w-24">Mood (0-5)</th>
-                        <th className="py-2 font-bold uppercase text-xs">Notes & Symptoms</th>
+                        <th className="py-2 font-bold uppercase text-xs">Notes & Patterns</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
