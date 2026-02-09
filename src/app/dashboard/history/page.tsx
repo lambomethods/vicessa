@@ -30,9 +30,28 @@ export default async function HistoryPage() {
             <TimelineView entries={entries.map(e => ({
                 id: e.id,
                 date: e.date.toISOString(),
+                // Metrics
                 feedsCount: e.feedsCount,
+                nursingSessions: e.nursingSessions,
+                milkVolume: e.milkVolume,
+
+                // Physiology
+                bodyTemperature: e.bodyTemperature,
+                physicalSymptoms: e.physicalSymptoms, // Rename if needed, but schema name is physicalSymptoms
+                painLevel: e.painLevel,
                 discomfortLevel: e.discomfortLevel,
+
+                // Mood
+                moodSignals: e.moodSignals,
+                irritabilityScore: e.irritabilityScore,
                 moodLevel: e.moodLevel,
+
+                // Sleep
+                sleepHours: e.sleepHours,
+
+                // Interventions
+                interventions: e.interventions,
+
                 notes: e.notes
             }))} />
         </div>

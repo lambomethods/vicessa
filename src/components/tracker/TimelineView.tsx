@@ -5,7 +5,7 @@ import { useState, useMemo } from "react"
 
 interface Entry {
     id: string
-    date: Date
+    date: string
     // Metrics
     feedsCount: number
     nursingSessions: number | null
