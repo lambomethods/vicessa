@@ -210,7 +210,7 @@ export function DailyLogForm({ existingEntry }: Props) {
             <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full py-4 bg-[var(--color-brand-primary)] text-[var(--color-brand-cream)] rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                className="w-full py-4 bg-[var(--color-brand-primary)] text-[var(--color-brand-cream)] rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 border-2 border-[var(--color-brand-primary)] hover:border-gray-800"
             >
                 {loading ? "Recording Observation..." : "Log Observation"}
             </button>
