@@ -41,9 +41,11 @@ export function BodyMap({ value = { left: [], right: [] }, onChange }: BodyMapPr
         side: "left" | "right"
         quadrant: Quadrant
         className?: string
+        transform?: string
     }) => (
         <path
             d={d}
+            transform={transform}
             onClick={() => handleToggle(side, quadrant)}
             className={cn(
                 "cursor-pointer transition-all duration-200 hover:opacity-80",
