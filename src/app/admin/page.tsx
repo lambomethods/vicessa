@@ -8,7 +8,7 @@ const anonymize = (id: string) => "usr_" + id.slice(-8)
 
 export default async function AdminPage() {
     const session = await auth()
-    // In a real app, check for ADMIN_EMAIL env var. 
+
     // For now, we allow logged-in users (Founder Mode) but hide the link.
     if (!session?.user?.email) redirect("/login")
 
@@ -57,8 +57,36 @@ export default async function AdminPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-900 font-mono">
-           {/* ... header ... */}
-           {/* ... investor headlines ... */}
+            {/* Header */}
+            <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+                <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                    <h1 className="font-bold text-lg tracking-tight">VICESSA ENGINE ROOM</h1>
+                </div>
+                <div className="text-xs text-gray-500">
+                    System Status: <span className="text-green-600 font-bold">OPERATIONAL</span>
+                </div>
+            </header>
+
+            <main className="max-w-7xl mx-auto p-6 space-y-8">
+
+                {/* 0. INVESTOR HEADLINES */}
+                <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-8 rounded-2xl shadow-lg">
+                    <div className="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 className="text-2xl font-bold font-serif mb-1">Company Traction</h2>
+                            <p className="opacity-60 text-sm">Live metrics for investor reporting.</p>
+                        </div>
+                        <div className="bg-white/10 px-3 py-1 rounded text-xs tracking-widest font-bold">
+                            REAL-TIME
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-8 text-center divide-x divide-white/10">
+                        <div>
+                            <div className="text-4xl font-bold mb-1">{totalUsers.toLocaleString()}</div>
+                            <div className="text-xs uppercase tracking-widest opacity-60">Total Users</div>
+                        </div>
                         <div>
                             <div className="text-4xl font-bold mb-1 text-[var(--color-brand-gold)]">
                                 {(signalCount / (totalUsers || 1)).toFixed(1)}
@@ -77,10 +105,10 @@ export default async function AdminPage() {
                         <span>Data Moat Status: <strong className="text-green-400">ACCUMULATING</strong></span>
                         <span>Updated: {new Date().toLocaleTimeString()}</span>
                     </div>
-                </div >
+                </div>
 
-        {/* 1. DRILL DOWNS */ }
-        < div className = "grid grid-cols-1 md:grid-cols-3 gap-4" >
+                {/* 1. DRILL DOWNS */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <div className="text-xs text-gray-500 uppercase tracking-widest mb-1">Total Data Points</div>
                         <div className="text-3xl font-bold">{totalEntries.toLocaleString()}</div>
@@ -93,13 +121,13 @@ export default async function AdminPage() {
                     </div>
                     <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <div className="text-xs text-gray-500 uppercase tracking-widest mb-1">Signal Velocity</div>
-                        <div className="text-3xl font-bold">{(signal count / 50).toFixed(1)}</div>
+                        <div className="text-3xl font-bold">{(signalCount / 50).toFixed(1)}</div>
                         <div className="text-xs text-gray-400 mt-2">Avg signals / entry (Last 50)</div>
                     </div>
-                </div >
+                </div>
 
-        {/* 2. The Stream */ }
-        < div className = "bg-black text-green-400 rounded-xl overflow-hidden shadow-2xl border border-gray-800" >
+                {/* 2. The Stream */}
+                <div className="bg-black text-green-400 rounded-xl overflow-hidden shadow-2xl border border-gray-800">
                     <div className="bg-gray-900 px-4 py-2 border-b border-gray-800 flex justify-between items-center">
                         <span className="text-xs font-bold uppercase">Incoming Data Stream (Live)</span>
                         <div className="flex gap-2">
@@ -126,7 +154,7 @@ export default async function AdminPage() {
                                     {anonymize(entry.userId)}
                                 </div>
                                 <div className="col-span-6 break-words">
-                                    {(entry.physicalSymptoms?.length > 0 || entry.moodSignals?.length > 0) ? (
+                                    {(entry.physicalSymptoms && entry.physicalSymptoms.length > 0) || (entry.moodSignals && entry.moodSignals.length > 0) ? (
                                         <div className="flex flex-wrap gap-1">
                                             {entry.physicalSymptoms?.map(s => (
                                                 <span key={s} className="bg-red-900/40 text-red-200 px-1 rounded border border-red-900/50">{s}</span>
@@ -146,17 +174,17 @@ export default async function AdminPage() {
                             </div>
                         ))}
                     </div>
-                </div >
+                </div>
 
-        {/* 3. Export Action */ }
-        < div className = "flex justify-end" >
-            <button disabled className="bg-gray-200 text-gray-400 px-6 py-3 rounded-lg font-bold cursor-not-allowed flex items-center gap-2">
-                <span>⬇️ Download Training Dataset (CSV)</span>
-                <span className="text-xs bg-gray-300 px-2 py-0.5 rounded text-gray-500">COMING SOON</span>
-            </button>
-                </div >
+                {/* 3. Export Action */}
+                <div className="flex justify-end">
+                    <button disabled className="bg-gray-200 text-gray-400 px-6 py-3 rounded-lg font-bold cursor-not-allowed flex items-center gap-2">
+                        <span>⬇️ Download Training Dataset (CSV)</span>
+                        <span className="text-xs bg-gray-300 px-2 py-0.5 rounded text-gray-500">COMING SOON</span>
+                    </button>
+                </div>
 
-            </main >
-        </div >
+            </main>
+        </div>
     )
 }
