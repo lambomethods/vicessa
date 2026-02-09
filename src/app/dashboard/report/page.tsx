@@ -88,7 +88,7 @@ export default async function DoctorReportPage() {
                         <th className="py-2 font-bold uppercase text-xs w-16">Feeds</th>
                         <th className="py-2 font-bold uppercase text-xs w-16">Pain</th>
                         <th className="py-2 font-bold uppercase text-xs w-24">Vitals</th>
-                        <th className="py-2 font-bold uppercase text-xs w-48">Signals & Symptoms</th>
+                        <th className="py-2 font-bold uppercase text-xs w-48">Body Signals</th>
                         <th className="py-2 font-bold uppercase text-xs">Interventions & Notes</th>
                     </tr>
                 </thead>
