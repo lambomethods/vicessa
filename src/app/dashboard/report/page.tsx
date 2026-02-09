@@ -84,31 +84,66 @@ export default async function DoctorReportPage() {
             <table className="w-full text-left text-sm border-collapse">
                 <thead>
                     <tr className="border-b-2 border-black">
-                        <th className="py-2 font-bold uppercase text-xs w-24">Date</th>
+                        <th className="py-2 font-bold uppercase text-xs w-20">Date</th>
                         <th className="py-2 font-bold uppercase text-xs w-16">Feeds</th>
-                        <th className="py-2 font-bold uppercase text-xs w-24">Pain (0-5)</th>
-                        <th className="py-2 font-bold uppercase text-xs w-24">Mood (0-5)</th>
-                        <th className="py-2 font-bold uppercase text-xs">Notes & Patterns</th>
+                        <th className="py-2 font-bold uppercase text-xs w-16">Pain</th>
+                        <th className="py-2 font-bold uppercase text-xs w-24">Vitals</th>
+                        <th className="py-2 font-bold uppercase text-xs w-48">Signals & Symptoms</th>
+                        <th className="py-2 font-bold uppercase text-xs">Interventions & Notes</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                     {entries.map(entry => {
                         const isHighRisk = (entry.discomfortLevel || 0) >= 4
+                        const hasFever = entry.bodyTemperature && entry.bodyTemperature > 37.5
                         return (
                             <tr key={entry.id} className={isHighRisk ? "bg-red-50 print:bg-gray-100" : ""}>
                                 <td className="py-3 font-medium align-top">
-                                    {format(new Date(entry.date), "MMM d, yyyy")}
+                                    {format(new Date(entry.date), "MMM d")}
                                     <div className="text-xs text-gray-400">{format(new Date(entry.date), "h:mm a")}</div>
                                 </td>
-                                <td className="py-3 align-top">{entry.feedsCount}</td>
+                                <td className="py-3 align-top">
+                                    {entry.feedsCount || 0}
+                                    {entry.nursingSessions && entry.nursingSessions > 0 &&
+                                        <div className="text-[10px] text-gray-500">Nurse: {entry.nursingSessions}</div>}
+                                </td>
                                 <td className={`py-3 align-top font-bold ${isHighRisk ? 'text-red-600' : ''}`}>
                                     {entry.discomfortLevel ?? "-"}
                                 </td>
-                                <td className="py-3 align-top">
-                                    {entry.moodLevel ?? "-"}
+                                <td className="py-3 align-top text-xs">
+                                    {entry.bodyTemperature && (
+                                        <div className={hasFever ? "text-red-600 font-bold" : ""}>
+                                            🌡️ {entry.bodyTemperature}°
+                                        </div>
+                                    )}
+                                    {entry.milkVolume && (
+                                        <div>🍼 {entry.milkVolume}ml</div>
+                                    )}
                                 </td>
-                                <td className="py-3 align-top italic text-gray-600">
-                                    {entry.notes || "-"}
+                                <td className="py-3 align-top">
+                                    <div className="flex flex-wrap gap-1">
+                                        {entry.physicalSymptoms?.map(s => (
+                                            <span key={s} className="bg-red-50 text-red-700 border border-red-100 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                                {s}
+                                            </span>
+                                        ))}
+                                        {entry.moodSignals?.map(s => (
+                                            <span key={s} className="bg-purple-50 text-purple-700 border border-purple-100 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                                {s}
+                                            </span>
+                                        ))}
+                                        {!entry.physicalSymptoms?.length && !entry.moodSignals?.length && <span className="text-gray-300">-</span>}
+                                    </div>
+                                </td>
+                                <td className="py-3 align-top text-xs">
+                                    {entry.interventions && entry.interventions.length > 0 && (
+                                        <div className="mb-1 text-blue-800">
+                                            <strong>Rx:</strong> {entry.interventions.join(", ")}
+                                        </div>
+                                    )}
+                                    <div className="italic text-gray-600">
+                                        {entry.notes || ""}
+                                    </div>
                                 </td>
                             </tr>
                         )
