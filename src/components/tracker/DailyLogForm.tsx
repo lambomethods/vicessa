@@ -199,6 +199,23 @@ export function DailyLogForm({ existingEntry }: Props) {
                 />
             </section>
 
+            <hr className="border-gray-100" />
+
+            {/* 5. REST & RECOVERY */}
+            <section className="space-y-6">
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">🌙</span>
+                    <h3 className="text-lg font-serif font-bold text-gray-800">Rest & Recovery</h3>
+                </div>
+                <SliderInput
+                    label="Hours Slept (Last 24h)"
+                    value={formData.sleepHours}
+                    onChange={v => setFormData({ ...formData, sleepHours: v })}
+                    labels={["0h", "12h+"]}
+                    max={12}
+                />
+            </section>
+
             {/* NOTES */}
             <textarea
                 className="w-full p-4 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-[var(--color-brand-gold)] outline-none min-h-[100px]"
