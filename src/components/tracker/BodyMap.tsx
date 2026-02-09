@@ -35,7 +35,8 @@ export function BodyMap({ value = { left: [], right: [] }, onChange }: BodyMapPr
         d,
         side,
         quadrant,
-        className
+        className,
+        transform
     }: {
         d: string
         side: "left" | "right"
