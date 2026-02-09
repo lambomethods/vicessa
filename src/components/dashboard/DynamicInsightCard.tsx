@@ -36,7 +36,7 @@ export function DynamicInsightCard({ insight }: DynamicInsightCardProps) {
                 <div className="text-lg font-bold mb-2 leading-tight">
                     {/* Shadow Mode: Soften the blow. */}
                     {insight.severity === 'high'
-                        ? "Please consult a healthcare professional regarding your recent symptoms."
+                        ? "Please consult a healthcare professional regarding your recent signals."
                         : insight.message}
                 </div>
                 {insight.congestionIndicator && (

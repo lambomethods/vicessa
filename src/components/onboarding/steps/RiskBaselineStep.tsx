@@ -7,17 +7,17 @@ interface Props {
     onBack: () => void
 }
 
-const SYMPTOMS = [
+const SIGNALS = [
     "Fever", "Chills", "Redness", "Hard lumps", "Anxiety", "Sadness", "Extreme fatigue"
 ]
 
 export function RiskBaselineStep({ data, updateData, onNext, onBack }: Props) {
-    const toggleSymptom = (symptom: string) => {
-        const current = data.currentSymptoms
-        if (current.includes(symptom)) {
-            updateData({ currentSymptoms: current.filter(s => s !== symptom) })
+    const toggleSignal = (signal: string) => {
+        const current = data.currentSymptoms // Keep internal data key for now
+        if (current.includes(signal)) {
+            updateData({ currentSymptoms: current.filter(s => s !== signal) })
         } else {
-            updateData({ currentSymptoms: [...current, symptom] })
+            updateData({ currentSymptoms: [...current, signal] })
         }
     }
 
@@ -47,20 +47,20 @@ export function RiskBaselineStep({ data, updateData, onNext, onBack }: Props) {
                     </div>
                 </div>
 
-                {/* Symptoms */}
+                {/* Signals */}
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Current Symptoms (Select all that apply)</label>
+                    <label className="text-sm font-medium">Current Signals (Select all that apply)</label>
                     <div className="flex flex-wrap gap-2">
-                        {SYMPTOMS.map(symptom => (
+                        {SIGNALS.map(signal => (
                             <button
-                                key={symptom}
-                                onClick={() => toggleSymptom(symptom)}
-                                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${data.currentSymptoms.includes(symptom)
+                                key={signal}
+                                onClick={() => toggleSignal(signal)}
+                                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${data.currentSymptoms.includes(signal)
                                     ? 'bg-[var(--foreground)] text-white border-[var(--foreground)]'
                                     : 'bg-white border-gray-200 hover:border-gray-300'
                                     }`}
                             >
-                                {symptom}
+                                {signal}
                             </button>
                         ))}
                     </div>
