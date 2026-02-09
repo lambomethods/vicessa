@@ -5,10 +5,29 @@ import { useState, useMemo } from "react"
 
 interface Entry {
     id: string
-    date: string
+    date: Date
+    // Metrics
     feedsCount: number
-    discomfortLevel: number | null
-    moodLevel: number | null
+    nursingSessions: number | null
+    milkVolume: string | null
+
+    // Physiology
+    bodyTemperature: number | null
+    physicalSymptoms: string[]
+    painLevel: number | null
+    discomfortLevel: number | null // Legacy backup
+
+    // Mood
+    moodSignals: string[]
+    irritabilityScore: number | null
+    moodLevel: number | null // Legacy backup
+
+    // Sleep
+    sleepHours: number | null
+
+    // Interventions
+    interventions: string[]
+
     notes: string | null
 }
 
@@ -30,8 +49,8 @@ export function TimelineView({ entries }: Props) {
             }
 
             // 2. Category Filter
-            if (filter === "PAIN") return (entry.discomfortLevel || 0) >= 3
-            if (filter === "MOOD") return (entry.moodLevel || 5) <= 2
+            if (filter === "PAIN") return (entry.discomfortLevel || entry.painLevel || 0) >= 4
+            if (filter === "MOOD") return (entry.moodLevel || 3) <= 2 || (entry.irritabilityScore || 0) >= 4
             if (filter === "NOTES") return !!entry.notes
 
             return true
@@ -100,7 +119,9 @@ export function TimelineView({ entries }: Props) {
                         {/* Timestamp Dot */}
                         <div className="absolute top-0 -left-[9px] w-4 h-4 rounded-full bg-[var(--color-brand-sage)] border-2 border-white shadow-sm" />
 
-                        <div className="bg-white p-4 rounded-xl border border-[var(--color-brand-eucalyptus-light)] shadow-sm space-y-3">
+                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+
+                            {/* Header: Date & Core Stats */}
                             <div className="flex justify-between items-start">
                                 <div>
                                     <h4 className="font-bold text-[var(--color-brand-eucalyptus)]">
@@ -111,32 +132,63 @@ export function TimelineView({ entries }: Props) {
                                     </p>
                                 </div>
                                 <div className="flex gap-2">
-                                    <span className="text-xs px-2 py-1 bg-[var(--color-brand-sage-light)] text-[var(--color-brand-eucalyptus)] rounded-full font-medium">
-                                        🍼 {entry.feedsCount} feeds
+                                    {entry.sleepHours !== null && entry.sleepHours > 0 && (
+                                        <span className="text-xs px-2 py-1 bg-indigo-50 text-indigo-700 rounded-full font-medium border border-indigo-100">
+                                            🌙 {entry.sleepHours}h
+                                        </span>
+                                    )}
+                                    <span className="text-xs px-2 py-1 bg-[var(--color-brand-sage-light)] text-[var(--color-brand-eucalyptus)] rounded-full font-medium border border-[var(--color-brand-sage)]/20">
+                                        🍼 {entry.nursingSessions ?? entry.feedsCount} sessions
                                     </span>
                                 </div>
                             </div>
 
-                            {/* Metrics Grid */}
-                            <div className="grid grid-cols-2 gap-4 pt-2">
-                                {entry.discomfortLevel !== null && (
+                            {/* New Data: Bubbles Row */}
+                            {(entry.physicalSymptoms?.length > 0 || entry.bodyTemperature) && (
+                                <div className="flex flex-wrap gap-2">
+                                    {entry.bodyTemperature && (
+                                        <span className="px-2 py-1 rounded-md text-xs font-bold bg-orange-50 text-orange-700 border border-orange-100">
+                                            🌡️ {entry.bodyTemperature}°
+                                        </span>
+                                    )}
+                                    {entry.physicalSymptoms.map(s => (
+                                        <span key={s} className="px-2 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 border border-red-100">
+                                            {s}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Mood & Interventions Row */}
+                            {(entry.moodSignals?.length > 0 || entry.interventions?.length > 0) && (
+                                <div className="flex flex-wrap gap-2">
+                                    {entry.moodSignals.map(s => (
+                                        <span key={s} className="px-2 py-1 rounded-md text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
+                                            🧠 {s}
+                                        </span>
+                                    ))}
+                                    {entry.interventions.map(s => (
+                                        <span key={s} className="px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                            🌿 {s}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+
+                            {/* Legacy/Bar Metrics (If no specific bubbles, fallback to bars? or show both?) */}
+                            {/* Let's show bars for levels if they exist and are significant */}
+                            <div className="grid grid-cols-2 gap-4">
+                                {(entry.painLevel !== null || entry.discomfortLevel !== null) && (
                                     <div className="space-y-1">
-                                        <span className="text-xs text-gray-500 uppercase tracking-wider">Discomfort</span>
+                                        <div className="flex justify-between text-xs text-gray-500 uppercase tracking-wider">
+                                            <span>Pain</span>
+                                            <span>{entry.painLevel ?? (entry.discomfortLevel ? entry.discomfortLevel * 2 : 0)}/10</span>
+                                        </div>
                                         <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-red-400 rounded-full"
-                                                style={{ width: `${(entry.discomfortLevel / 5) * 100}%` }}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
-                                {entry.moodLevel !== null && (
-                                    <div className="space-y-1">
-                                        <span className="text-xs text-gray-500 uppercase tracking-wider">Mood</span>
-                                        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-green-400 rounded-full"
-                                                style={{ width: `${(entry.moodLevel / 5) * 100}%` }}
+                                                style={{ width: `${(entry.painLevel ? entry.painLevel * 10 : (entry.discomfortLevel || 0) * 20)}%` }}
                                             />
                                         </div>
                                     </div>
@@ -144,7 +196,7 @@ export function TimelineView({ entries }: Props) {
                             </div>
 
                             {entry.notes && (
-                                <div className="text-sm text-gray-600 bg-gray-50 p-2 rounded-lg italic mt-2">
+                                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-xl italic border border-gray-100">
                                     &quot;{entry.notes}&quot;
                                 </div>
                             )}
