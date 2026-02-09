@@ -64,6 +64,7 @@ model TrackerEntry {
   pumpSessions     Int       @default(0)
   lastFeedTime     DateTime?
   
+  // --- Legacy Fields (Keep for backward compatibility or migration) ---
   discomfortLevel  Int?
   fullnessLevel    Int?
   sensitivityLevel Int?
@@ -79,6 +80,25 @@ model TrackerEntry {
   babyFussiness    Int?
   solidFoodIntake  Int?
   babyDependency   String?
+
+  // --- NEW: Maternal Cessation Engine (The Pivot) ---
+  // Physiology
+  bodyTemperature   Float?     // Decimal (e.g., 99.1)
+  physicalSymptoms  String[]   // Array: "Redness", "Hot to Touch", "Wedge-Shaped Hardness"
+  painLevel         Int?       // 1-10 Scale
+  breastHeatmap     Json?      // Quadrant Data: { left: ["upper-outer"], right: [] }
+
+  // Descent / Logistics
+  nursingSessions   Int?       // Total removal sessions
+  maxMilkGap        Float?     // Hours between removals
+  milkVolume        String?    // FULL, HALF, MINIMAL
+
+  // Hormonal / Mood
+  moodSignals       String[]   // Array: "Crying Bouts", "Brain Fog", "Night Sweats"
+  irritabilityScore Int?       // 1-5 Scale
+
+  // Interventions
+  interventions     String[]   // Array: "Cabbage", "Ice", "Sage Tea"
   
   notes            String?
   
