@@ -27,7 +27,7 @@ export function Footer() {
 
                 <div className="border-t border-gray-200 pt-8 text-center text-xs text-gray-500 max-w-4xl mx-auto space-y-4">
                     <p>
-                        © {new Date().getFullYear()} Vicessa Health. All rights reserved.
+                        © {new Date().getFullYear()} Vicessa. All rights reserved.
                     </p>
                     <p className="italic">
                         Vicessa is a digital pattern recognition platform designed to help users observe and organize personal lactation-related data.

@@ -183,7 +183,7 @@ export default async function Home() {
           <Logo className="w-5 h-5" showText={false} />
           <span className="font-serif font-bold text-lg text-[var(--foreground)]">Vicessa</span>
         </div>
-        <p className="text-xs text-[var(--foreground)]/40">© 2026 Vicessa Health. Built for the transition.</p>
+        <p className="text-xs text-[var(--foreground)]/40">© 2026 Vicessa. Built for the transition.</p>
       </footer>
     </div >
   )
