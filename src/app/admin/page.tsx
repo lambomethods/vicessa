@@ -52,7 +52,44 @@ export default async function AdminPage() {
 
             <main className="max-w-7xl mx-auto p-6 space-y-8">
 
-                {/* 1. KPIs */}
+                {/* 0. INVESTOR HEADLINES */}
+                <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-8 rounded-2xl shadow-lg">
+                    <div className="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 className="text-2xl font-bold font-serif mb-1">Company Traction</h2>
+                            <p className="opacity-60 text-sm">Live metrics for investor reporting.</p>
+                        </div>
+                        <div className="bg-white/10 px-3 py-1 rounded text-xs tracking-widest font-bold">
+                            REAL-TIME
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-8 text-center divide-x divide-white/10">
+                        <div>
+                            <div className="text-4xl font-bold mb-1">{totalUsers.toLocaleString()}</div>
+                            <div className="text-xs uppercase tracking-widest opacity-60">Total Users</div>
+                        </div>
+                        <div>
+                            <div className="text-4xl font-bold mb-1 text-[var(--color-brand-gold)]">
+                                {(signal count / (totalUsers || 1)).toFixed(1)}
+                            </div>
+                            <div className="text-xs uppercase tracking-widest opacity-60">Avg Signals / User</div>
+                        </div>
+                        <div>
+                            <div className="text-4xl font-bold mb-1 text-green-400">
+                                {totalEntries.toLocaleString()}
+                            </div>
+                            <div className="text-xs uppercase tracking-widest opacity-60">Total Data Points</div>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-xs opacity-50">
+                        <span>Data Moat Status: <strong className="text-green-400">ACCUMULATING</strong></span>
+                        <span>Updated: {new Date().toLocaleTimeString()}</span>
+                    </div>
+                </div>
+
+                {/* 1. DRILL DOWNS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <div className="text-xs text-gray-500 uppercase tracking-widest mb-1">Total Data Points</div>
