@@ -28,7 +28,19 @@ const createEntry = (hours: number, feeds: number, mood: number | null, pain: nu
     babyFussiness: 0,
     solidFoodIntake: 0,
     babyDependency: null,
-    notes: null
+    notes: null,
+
+    // NEW FIELDS (Maternal Cessation Engine)
+    bodyTemperature: null,
+    physicalSymptoms: [],
+    painLevel: pain !== null ? pain * 2 : null, // Rough mapping 1-5 to 1-10
+    breastHeatmap: null,
+    nursingSessions: 0,
+    maxMilkGap: 0,
+    milkVolume: "FULL",
+    moodSignals: [],
+    irritabilityScore: 0,
+    interventions: []
 })
 
 console.log("\n🧪 STARTING STAGE 1 VALIDATION: The Pattern Engine\n")
