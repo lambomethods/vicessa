@@ -12,23 +12,18 @@ export default async function AdminPage() {
     // For now, we allow logged-in users (Founder Mode) but hide the link.
     if (!session?.user?.email) redirect("/login")
 
-    // SECURITY: Only Allow Admin Email
-    const adminEmail = process.env.ADMIN_EMAIL
-    if (!adminEmail) {
-        return (
-            <div className="p-10 text-center text-red-600 font-bold">
-                ⚠️ SECURITY MISTAG: ADMIN_EMAIL not set in environment variables.
-            </div>
-        )
-    }
+    // SECURITY: Whitelist
+    const allowedEmails = [process.env.ADMIN_EMAIL, "support@vicessa.app"]
+        .filter(Boolean) // remove undefined if env var missing
+        .map(e => e?.toLowerCase())
 
-    if (session.user.email !== adminEmail) {
+    if (!allowedEmails.includes(session.user.email.toLowerCase())) {
         return (
             <div className="p-10 text-center space-y-4">
                 <h1 className="text-2xl font-bold text-red-600">🛑 Restricted Area</h1>
                 <p className="text-gray-600">
-                    This view is restricted to the platform administrator. <br />
-                    Your attempt has been logged.
+                    This view is restricted to the platform administrator.<br />
+                    Your email <strong>{session.user.email}</strong> is not authorized.
                 </p>
                 <a href="/dashboard" className="text-blue-500 hover:underline">Return to Dashboard</a>
             </div>
