@@ -10,7 +10,30 @@ export default async function AdminPage() {
     const session = await auth()
     // In a real app, check for ADMIN_EMAIL env var. 
     // For now, we allow logged-in users (Founder Mode) but hide the link.
-    if (!session?.user) redirect("/login")
+    if (!session?.user?.email) redirect("/login")
+
+    // SECURITY: Only Allow Admin Email
+    const adminEmail = process.env.ADMIN_EMAIL
+    if (!adminEmail) {
+        return (
+            <div className="p-10 text-center text-red-600 font-bold">
+                ⚠️ SECURITY MISTAG: ADMIN_EMAIL not set in environment variables.
+            </div>
+        )
+    }
+
+    if (session.user.email !== adminEmail) {
+        return (
+            <div className="p-10 text-center space-y-4">
+                <h1 className="text-2xl font-bold text-red-600">🛑 Restricted Area</h1>
+                <p className="text-gray-600">
+                    This view is restricted to the platform administrator. <br />
+                    Your attempt has been logged.
+                </p>
+                <a href="/dashboard" className="text-blue-500 hover:underline">Return to Dashboard</a>
+            </div>
+        )
+    }
 
     // Fetch Stats
     const totalEntries = await prisma.trackerEntry.count()
